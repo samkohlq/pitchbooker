@@ -16,8 +16,7 @@ const uiConfig = {
   signInSuccessUrl: "/",
   signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID]
 };
-
-const createAccount = () => {
+const login = () => {
   ui.start("#firebaseui-auth-container", uiConfig);
 };
 
@@ -34,9 +33,7 @@ export default class TopNavbar extends React.Component {
           >
             <Navbar.Brand>Pitch Booker</Navbar.Brand>
             <NavDropdown title="Field Providers">
-              <NavDropdown.Item onClick={() => createAccount()}>
-                Login
-              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => login()}>Login</NavDropdown.Item>
             </NavDropdown>
           </Navbar>
         </div>
