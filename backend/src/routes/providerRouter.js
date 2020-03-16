@@ -1,9 +1,13 @@
 import express from "express";
-import { createProvider } from "../controllers/providerController";
+import {
+  createProvider,
+  retrieveProvider
+} from "../controllers/providerController";
 
 const router = express.Router();
 
-// create pitch
+// create provider
 router.post("/createProvider", (req, res) => createProvider(req, res));
+router.get("/retrieveProvider", (req, res) => retrieveProvider(req, res));
 
 export default router;
