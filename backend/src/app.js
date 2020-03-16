@@ -2,10 +2,10 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+import pitchRouter from "./routes/pitchRouter";
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-import pitchRouter from "./routes/pitchRouter";
 
 var app = express();
 
