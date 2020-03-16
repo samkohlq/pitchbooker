@@ -13,7 +13,6 @@ const uiConfig = {
       return true;
     }
   },
-  signInFlow: "redirect",
   signInSuccessUrl: "/",
   signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID]
 };
@@ -36,9 +35,8 @@ export default class TopNavbar extends React.Component {
             <Navbar.Brand>Pitch Booker</Navbar.Brand>
             <NavDropdown title="Field Providers">
               <NavDropdown.Item onClick={() => createAccount()}>
-                Create account
+                Login
               </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.1">Login</NavDropdown.Item>
             </NavDropdown>
           </Navbar>
         </div>
