@@ -3,6 +3,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 import "core-js/stable";
+import cors from "cors";
 import "regenerator-runtime/runtime";
 import pitchRouter from "./routes/pitchRouter";
 import providerRouter from "./routes/providerRouter";
@@ -13,6 +14,7 @@ var usersRouter = require("./routes/users");
 var app = express();
 
 app.use(logger("dev"));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

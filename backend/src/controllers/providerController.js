@@ -15,7 +15,7 @@ export const createProvider = async (req, res) => {
 export const retrieveProvider = async (req, res) => {
   const provider = await Provider.findAll({
     where: {
-      name: req.query.providerName
+      id: req.query.providerId
     }
   });
   res.send(provider);
