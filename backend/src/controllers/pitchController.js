@@ -16,3 +16,13 @@ export const createPitch = async (req, res) => {
   await newPitch.setProvider(associatedProvider);
   res.send(newPitch);
 };
+
+export const retrieveOwnPitches = async (req, res) => {
+  const provider = await Provider.findOne({
+    where: {
+      id: req.query.providerId
+    }
+  });
+  const pitches = await provider.getPitches();
+  res.send(pitches);
+};
