@@ -13,7 +13,7 @@ export const createProvider = async (req, res) => {
 };
 
 export const retrieveProvider = async (req, res) => {
-  const provider = await Provider.find({
+  const provider = await Provider.findAll({
     where: {
       name: req.query.providerName
     }
