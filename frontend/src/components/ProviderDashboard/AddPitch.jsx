@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap";
 
 class AddPitch extends React.Component {
+  // define attributes in local state
   constructor(props) {
     super(props);
     this.state = {
@@ -20,6 +21,7 @@ class AddPitch extends React.Component {
     };
   }
 
+  // set state when there are changes to inputs in form
   handleChange = event => {
     if (event.target) {
       this.setState({
@@ -29,6 +31,7 @@ class AddPitch extends React.Component {
     }
   };
 
+  // send HTTP POST request to backend when user clicks "submit"
   handleClick = () => {
     fetch(`http://localhost:5001/pitches/createPitch`, {
       method: "POST",
@@ -40,6 +43,7 @@ class AddPitch extends React.Component {
         maxNumPlayersPerSide: this.state.maxNumPlayersPerSide,
         pricePerHour: this.state.pricePerHour,
         address: this.state.address,
+        // TODO(samkohlq): send logged-in user's providerId in request body
         providerId: 1
       })
     });
@@ -49,6 +53,7 @@ class AddPitch extends React.Component {
     return (
       <Row className="my-5">
         <Col xs sm="12" md="6" lg="4" className="ml-5">
+          {/* Render an accordion which expands only if user chooses to add a new pitch */}
           <Accordion>
             <Card>
               <Card.Header>
@@ -58,6 +63,7 @@ class AddPitch extends React.Component {
               </Card.Header>
               <Accordion.Collapse eventKey="0">
                 <Card.Body>
+                  {/* form input field 1: pitch name */}
                   <InputGroup
                     className="mb-3"
                     size="sm"
@@ -66,8 +72,11 @@ class AddPitch extends React.Component {
                     <InputGroup.Prepend>
                       <InputGroup.Text>Pitch name</InputGroup.Text>
                     </InputGroup.Prepend>
+                    {/* gives the input a HTML name attribute with value "pitchName"
+                    so we can reference it in handleChange event */}
                     <FormControl name="pitchName" />
                   </InputGroup>
+                  {/* form input field 2: max number of players */}
                   <InputGroup
                     className="mb-3"
                     size="sm"
@@ -76,11 +85,14 @@ class AddPitch extends React.Component {
                     <InputGroup.Prepend>
                       <InputGroup.Text>Max no. of players</InputGroup.Text>
                     </InputGroup.Prepend>
+                    {/* gives the input a HTML name attribute with value "maxNumPlayersPerSide"
+                    so we can reference it in handleChange event */}
                     <FormControl name="maxNumPlayersPerSide" />
                     <InputGroup.Append>
                       <InputGroup.Text>per side</InputGroup.Text>
                     </InputGroup.Append>
                   </InputGroup>
+                  {/* form input field 3: price per hour */}
                   <InputGroup
                     className="mb-3"
                     size="sm"
@@ -89,11 +101,14 @@ class AddPitch extends React.Component {
                     <InputGroup.Prepend>
                       <InputGroup.Text>$</InputGroup.Text>
                     </InputGroup.Prepend>
+                    {/* gives the input a HTML name attribute with value "pricePerHour"
+                    so we can reference it in handleChange event */}
                     <FormControl name="pricePerHour" />
                     <InputGroup.Append>
                       <InputGroup.Text>per hour</InputGroup.Text>
                     </InputGroup.Append>
                   </InputGroup>
+                  {/* form input field 4: address */}
                   <InputGroup
                     className="mb-3"
                     size="sm"
@@ -102,6 +117,8 @@ class AddPitch extends React.Component {
                     <InputGroup.Prepend>
                       <InputGroup.Text>Address</InputGroup.Text>
                     </InputGroup.Prepend>
+                    {/* gives the input a HTML name attribute with value "address"
+                    so we can reference it in handleChange event */}
                     <FormControl name="address" />
                   </InputGroup>
                   <Button

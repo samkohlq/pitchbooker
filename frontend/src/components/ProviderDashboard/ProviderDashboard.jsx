@@ -1,11 +1,13 @@
 import React from "react";
 import AddPitch from "./AddPitch";
+import PitchesList from "./PitchesList";
 
 class ProviderDashboard extends React.Component {
   render() {
     return (
-      <div className="border border-danger">
+      <div>
         <AddPitch />
+        <PitchesList />
       </div>
     );
   }
