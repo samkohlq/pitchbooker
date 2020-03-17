@@ -17,8 +17,8 @@ export const createPitch = async (req, res) => {
   res.send(newPitch);
 };
 
-export const retrieveOwnPitches = async (req, res) => {
-  const provider = await Provider.findOne({
+export const retrievePitches = async (req, res) => {
+  const provider = await Provider.findByPk({
     where: {
       id: req.query.providerId
     }

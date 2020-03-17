@@ -1,17 +1,13 @@
-"use strict";
+'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Provider = sequelize.define(
-    "Provider",
-    {
-      name: DataTypes.STRING,
-      address: DataTypes.STRING,
-      email: DataTypes.STRING,
-      phoneNum: DataTypes.STRING
-    },
-    {}
-  );
+  const Provider = sequelize.define('Provider', {
+    name: DataTypes.STRING,
+    address: DataTypes.STRING,
+    email: DataTypes.STRING,
+    phoneNum: DataTypes.STRING
+  }, {});
   Provider.associate = function(models) {
-    Provider.hasMany(models.Pitch);
+    // associations can be defined here
   };
   return Provider;
 };
