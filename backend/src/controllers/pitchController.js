@@ -3,9 +3,11 @@ import { Pitch, Provider } from "../db/models";
 export const createPitch = async (req, res) => {
   const [newPitch, associatedProvider] = await Promise.all([
     Pitch.create({
+      name: req.body.name,
       pricePerHour: req.body.pricePerHour,
       address: req.body.address,
-      maxNumPlayersPerSide: req.body.maxNumPlayersPerSide
+      maxNumPlayersPerSide: req.body.maxNumPlayersPerSide,
+      ProviderId: req.body.providerId
     }),
     Provider.findOne({
       where: {

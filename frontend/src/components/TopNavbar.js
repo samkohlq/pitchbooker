@@ -3,9 +3,9 @@ import { NavDropdown } from "react-bootstrap";
 import Navbar from "react-bootstrap/Navbar";
 import firebase from "../firebase";
 
-// In this component will contain both login and create account component, and the state will contain the organization name if logged in
 var firebaseui = require("firebaseui");
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
+var anonymousUser = firebase.auth().currentUser;
 
 const uiConfig = {
   callbacks: {
@@ -13,6 +13,7 @@ const uiConfig = {
       return true;
     }
   },
+  autoUpgradeAnonymousUsers: true,
   signInSuccessUrl: "/",
   signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID]
 };
@@ -21,6 +22,7 @@ const login = () => {
 };
 
 export default class TopNavbar extends React.Component {
+  // TODO(Perry): Make a onAuthStateChange in ComponentDidMount to ask for organisation name and phone number to send to the backend
   render() {
     return (
       <div>
