@@ -8,7 +8,9 @@ export const createProvider = async (req, res) => {
       email: req.body.email,
       phoneNum: req.body.phoneNum
     })
-  ]);
+  ]).catch(error => {
+    console.log(error);
+  });
   res.send(newProvider);
 };
 
