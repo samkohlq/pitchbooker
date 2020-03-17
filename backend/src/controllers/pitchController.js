@@ -31,14 +31,31 @@ export const retrievePitches = async (req, res) => {
     const pitchIdsBookedAtTimeslot = await Booking.findAll({
       attributes: ["PitchId"],
       where: {
-        bookingStartDateTime: {
-          [Sequelize.Op.gte]: startDateTime
-        },
-        bookingEndDateTime: {
-          [Sequelize.Op.lte]: endDateTime
-        }
+        [Sequelize.Op.or]: [
+          {
+            bookingStartDateTime: {
+              [Sequelize.Op.lte]: startDateTime
+            },
+            bookingEndDateTime: {
+              [Sequelize.Op.gte]: endDateTime
+            }
+          },
+          {
+            bookingStartDateTime: {
+              [Sequelize.Op.between]: [startDateTime, endDateTime]
+            }
+          },
+          {
+            bookingEndDateTime: {
+              [Sequelize.Op.between]: [startDateTime, endDateTime]
+            }
+          }
+        ]
       }
+    }).map(pitchId => pitchId.get("PitchId"));
+    const pitches = await Pitch.findAll({
+      where: { id: pitchIdsBookedAtTimeslot }
     });
-    res.send(pitchIdsBookedAtTimeslot);
+    res.send(pitches);
   }
 };
