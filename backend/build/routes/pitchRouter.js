@@ -17,8 +17,8 @@ var router = _express["default"].Router(); // create pitch
 router.post("/createPitch", function (req, res) {
   return (0, _pitchController.createPitch)(req, res);
 });
-router.get("/retrieveOwnPitches", function (req, res) {
-  return (0, _pitchController.retrieveOwnPitches)(req, res);
+router.get("/retrievePitches", function (req, res) {
+  return (0, _pitchController.retrievePitches)(req, res);
 });
 var _default = router;
 exports["default"] = _default;
