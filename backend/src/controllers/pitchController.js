@@ -54,7 +54,7 @@ export const retrievePitches = async (req, res) => {
       }
     }).map(pitchId => pitchId.get("PitchId"));
     const pitches = await Pitch.findAll({
-      where: { id: pitchIdsBookedAtTimeslot }
+      where: { id: { [Sequelize.Op.not]: pitchIdsBookedAtTimeslot } }
     });
     res.send(pitches);
   }
