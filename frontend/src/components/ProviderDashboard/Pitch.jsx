@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 
+// TODO(samkohlq): figure out how to pass in pitches from PitchesList
 class Pitch extends React.Component {
   constructor(props) {
     super(props);
