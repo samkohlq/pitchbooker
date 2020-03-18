@@ -1,8 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
-import FieldForm from "./components/FieldForm";
 import Login from "./components/Login";
 import ProviderDashboard from "./components/ProviderDashboard/ProviderDashboard";
+import ProviderInfoForm from "./components/ProviderInfoForm";
 import TopNavbar from "./components/TopNavbar";
 import firebase from "./firebase";
 
@@ -27,7 +27,7 @@ class App extends React.Component {
       <div>
         <TopNavbar />
         <ProviderDashboard />
-        <FieldForm />
+        <ProviderInfoForm />
       </div>
     ) : (
       <div>
