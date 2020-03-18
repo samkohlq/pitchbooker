@@ -8,7 +8,13 @@ import firebase from "../firebase";
 export default class FieldForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: null, phoneNum: null, address: null, email: null };
+    this.state = {
+      name: null,
+      phoneNum: null,
+      address: null,
+      email: null,
+      currentUserUid: null
+    };
   }
   handleChange = e => {
     if (e.target) {
@@ -22,7 +28,9 @@ export default class FieldForm extends React.Component {
   };
 
   handleClick = async () => {
+    console.log(firebase.auth().currentUser.uid);
     await this.setState({ email: firebase.auth().currentUser.email });
+    await this.setState({ currentUserUid: firebase.auth().currentUser.uid });
     fetch("http://localhost:5001/providers/createProvider", {
       method: "POST",
       headers: {
@@ -32,7 +40,8 @@ export default class FieldForm extends React.Component {
         name: this.state.name,
         phoneNum: this.state.phoneNum,
         address: this.state.address,
-        email: this.state.email
+        email: this.state.email,
+        currentUserUid: this.state.currentUserUid
       })
     });
   };
