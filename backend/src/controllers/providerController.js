@@ -14,12 +14,3 @@ export const createProvider = async (req, res) => {
   });
   res.send(newProvider);
 };
-
-export const retrieveProviders = async (req, res) => {
-  const provider = await Provider.findAll({
-    where: {
-      uid: req.query.currentUserUid
-    }
-  });
-  res.send(provider);
-};
