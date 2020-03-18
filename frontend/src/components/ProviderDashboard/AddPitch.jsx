@@ -1,3 +1,4 @@
+import * as firebase from "firebase";
 import React from "react";
 import {
   Accordion,
@@ -33,20 +34,22 @@ class AddPitch extends React.Component {
 
   // send HTTP POST request to backend when user clicks "submit"
   handleClick = () => {
-    fetch(`http://localhost:5001/pitches/createPitch`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        name: this.state.pitchName,
-        maxNumPlayersPerSide: this.state.maxNumPlayersPerSide,
-        pricePerHour: this.state.pricePerHour,
-        address: this.state.address,
-        // TODO(samkohlq): send logged-in user's providerId in request body
-        providerId: 1
-      })
-    });
+    const currentUserUid = firebase.auth().currentUser.uid;
+    fetch(
+      `http://localhost:5001/pitches/createPitch?currentUserUid=${currentUserUid}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: this.state.pitchName,
+          maxNumPlayersPerSide: this.state.maxNumPlayersPerSide,
+          pricePerHour: this.state.pricePerHour,
+          address: this.state.address
+        })
+      }
+    );
   };
 
   render() {
