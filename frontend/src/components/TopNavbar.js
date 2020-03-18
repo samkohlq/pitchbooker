@@ -25,6 +25,7 @@ export default class TopNavbar extends React.Component {
       <div className="top-navbar-container">
         <Navbar className="justify-content-between" bg="light" expand="lg">
           <Navbar.Brand>Pitch Booker</Navbar.Brand>
+          <Navbar.Brand>{firebase.auth().currentUser.displayName}</Navbar.Brand>
         </Navbar>
       </div>
     ) : (
