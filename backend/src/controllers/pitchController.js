@@ -2,20 +2,19 @@ import { Booking, Pitch, Provider } from "../db/models";
 const Sequelize = require("sequelize");
 
 export const createPitch = async (req, res) => {
-  const [newPitch, associatedProvider] = await Promise.all([
-    Pitch.create({
-      name: req.body.name,
-      pricePerHour: req.body.pricePerHour,
-      address: req.body.address,
-      maxNumPlayersPerSide: req.body.maxNumPlayersPerSide,
-      ProviderId: req.body.providerId
-    }),
-    Provider.findOne({
-      where: {
-        id: req.body.providerId
-      }
-    })
-  ]);
+  const associatedProvider = await Provider.findOne({
+    where: {
+      uid: req.query.currentUserUid
+    }
+  });
+  const providerId = await associatedProvider.get("id");
+  const newPitch = await Pitch.create({
+    name: req.body.name,
+    pricePerHour: req.body.pricePerHour,
+    address: req.body.address,
+    maxNumPlayersPerSide: req.body.maxNumPlayersPerSide,
+    ProviderId: providerId
+  });
   await newPitch.setProvider(associatedProvider);
   res.send(newPitch);
 };
