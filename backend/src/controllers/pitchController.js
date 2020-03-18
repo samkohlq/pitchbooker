@@ -21,8 +21,12 @@ export const createPitch = async (req, res) => {
 };
 
 export const retrievePitches = async (req, res) => {
-  if (req.query.providerId) {
-    const provider = await Provider.findByPk(req.query.providerId);
+  if (req.query.currentUserUid) {
+    const provider = await Provider.findOne({
+      where: {
+        uid: req.query.currentUserUid
+      }
+    });
     const pitches = await provider.getPitches();
     res.send(pitches);
   } else {
@@ -54,7 +58,10 @@ export const retrievePitches = async (req, res) => {
       }
     }).map(pitchId => pitchId.get("PitchId"));
     const pitches = await Pitch.findAll({
-      where: { id: { [Sequelize.Op.not]: pitchIdsBookedAtTimeslot } }
+      where: {
+        id: { [Sequelize.Op.not]: pitchIdsBookedAtTimeslot },
+        maxNumPlayersPerSide: req.query.maxNumPlayersPerSide
+      }
     });
     res.send(pitches);
   }

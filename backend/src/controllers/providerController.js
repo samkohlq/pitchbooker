@@ -6,7 +6,8 @@ export const createProvider = async (req, res) => {
       name: req.body.name,
       address: req.body.address,
       email: req.body.email,
-      phoneNum: req.body.phoneNum
+      phoneNum: req.body.phoneNum,
+      uid: req.body.currentUserUid
     })
   ]).catch(error => {
     console.log(error);
@@ -17,7 +18,7 @@ export const createProvider = async (req, res) => {
 export const retrieveProviders = async (req, res) => {
   const provider = await Provider.findAll({
     where: {
-      id: req.query.providerId
+      uid: req.query.currentUserUid
     }
   });
   res.send(provider);
