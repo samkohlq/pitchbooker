@@ -25,17 +25,28 @@ class App extends React.Component {
   render() {
     const homepage = this.state.loggedIn ? (
       <div>
-        <TopNavbar />
         <ProviderDashboard />
         <ProviderInfoForm />
       </div>
     ) : (
       <div>
-        <TopNavbar />
         <Login />
+        <BookerSearchBar />
       </div>
     );
-    return homepage;
+    return (
+      <Router>
+        <TopNavbar />
+        <Switch>
+          <Route exact path="/">
+            {homepage}
+          </Route>
+          <Route path="/success">
+            <BookingSuccess />
+          </Route>
+        </Switch>
+      </Router>
+    );
   }
 }
 export default App;
