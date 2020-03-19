@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
+import BookerSearchBar from "./components/BookerSearchBar";
 import Login from "./components/Login";
 import ProviderDashboard from "./components/ProviderDashboard/ProviderDashboard";
 import ProviderInfoForm from "./components/ProviderInfoForm";
@@ -33,6 +34,7 @@ class App extends React.Component {
       <div>
         <TopNavbar />
         <Login />
+        <BookerSearchBar />
       </div>
     );
     return homepage;
