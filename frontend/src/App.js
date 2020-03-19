@@ -1,5 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import BookingSuccess from "./components/BookingSuccess";
 import Login from "./components/Login";
 import ProviderDashboard from "./components/ProviderDashboard/ProviderDashboard";
 import ProviderInfoForm from "./components/ProviderInfoForm";
@@ -25,17 +27,27 @@ class App extends React.Component {
   render() {
     const homepage = this.state.loggedIn ? (
       <div>
-        <TopNavbar />
         <ProviderDashboard />
         <ProviderInfoForm />
       </div>
     ) : (
       <div>
-        <TopNavbar />
         <Login />
       </div>
     );
-    return homepage;
+    return (
+      <Router>
+        <TopNavbar />
+        <Switch>
+          <Route exact path="/">
+            {homepage}
+          </Route>
+          <Route path="/success">
+            <BookingSuccess />
+          </Route>
+        </Switch>
+      </Router>
+    );
   }
 }
 export default App;
