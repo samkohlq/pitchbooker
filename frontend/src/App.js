@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import BookerSearchBar from "./components/BookerSearchBar/BookerSearchBar";
-import BookingSuccess from "./components/BookingSuccess";
+import BookingSuccess from "./components/BookerSearchComponents/BookingSuccess";
 import Login from "./components/Login";
 import ProviderDashboard from "./components/ProviderDashboard/ProviderDashboard";
 import TopNavbar from "./components/TopNavbar";
