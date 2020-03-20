@@ -15,6 +15,19 @@ export const createProvider = async (req, res) => {
   res.send(newProvider);
 };
 
+export const providerExists = async (req, res) => {
+  const providerExists = await Provider.findOne({
+    where: {
+      uid: req.query.currentUserUid
+    }
+  });
+  if (providerExists) {
+    res.send(true);
+  } else {
+    res.send(false);
+  }
+};
+
 export const retrieveProvider = async (req, res) => {
   const provider = await Provider.findOne({
     where: {
@@ -27,5 +40,3 @@ export const retrieveProvider = async (req, res) => {
     res.send(provider);
   } else {
     res.send({ id: null });
-  }
-};
