@@ -14,11 +14,11 @@ class ProviderDashboard extends React.Component {
     firebase.auth().onAuthStateChanged(user => {
       const currentUserUid = user.uid;
       fetch(
-        `http://localhost:5001/providers/providerExists?currentUserUid=${currentUserUid}`
+        `http://localhost:5001/providers/retrieveProvider?currentUserUid=${currentUserUid}`
       )
         .then(response => response.json())
-        .then(providerExists => {
-          if (providerExists) {
+        .then(provider => {
+          if (provider.id) {
             this.setState({ providerSubmittedOrgnisationInfo: true });
           } else {
             this.setState({ providerSubmittedOrgnisationInfo: false });
