@@ -40,3 +40,5 @@ export const retrieveProvider = async (req, res) => {
     res.send(provider);
   } else {
     res.send({ id: null });
+  }
+};
