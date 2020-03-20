@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import BookingSearchBar from "./components/BookerSearchBar/BookerSearchBar";
-import BookingSuccess from "./components/BookingSuccess";
+import BookingSuccess from "./components/BookerSearchComponents/BookingSuccess";
 import Login from "./components/Login";
 import ProviderDashboard from "./components/ProviderDashboard/ProviderDashboard";
 import ProviderInfoForm from "./components/ProviderInfoForm";
@@ -40,6 +40,9 @@ class App extends React.Component {
     return (
       <Router>
         <TopNavbar />
+        {/* <Button>
+          <Link to="/success">Success</Link>
+        </Button> */}
         <Switch>
           <Route exact path="/">
             {homepage}
