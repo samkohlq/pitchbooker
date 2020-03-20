@@ -27,3 +27,16 @@ export const providerExists = async (req, res) => {
     res.send(false);
   }
 };
+
+export const retrieveProvider = async (req, res) => {
+  const provider = await Provider.findOne({
+    where: {
+      uid: req.query.currentUserUid
+    }
+  }).catch(error => {
+    console.log(error);
+  });
+  if (provider) {
+    res.send(provider);
+  } else {
+    res.send({ id: null });
