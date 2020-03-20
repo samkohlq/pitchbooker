@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Col, Container, Form, Jumbotron } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import PitchesList from "../BookerSearchComponents/PitchesList";
 import "./BookerSearchBar.css";
 
 class BookerSearchBar extends React.Component {
@@ -10,7 +11,8 @@ class BookerSearchBar extends React.Component {
     this.state = {
       startDateTime: new Date(),
       endDateTime: new Date(),
-      maxNumPlayersPerSide: null
+      maxNumPlayersPerSide: null,
+      pitches: []
     };
   }
 
@@ -33,8 +35,22 @@ class BookerSearchBar extends React.Component {
   };
 
   handleClick = () => {
-    const startDateTime = this.state.startDateTime;
-    const endDateTime = this.state.endDateTime;
+    const startDateTime = new Date(
+      this.state.startDateTime.getUTCFullYear(),
+      this.state.startDateTime.getUTCMonth(),
+      this.state.startDateTime.getUTCDate(),
+      this.state.startDateTime.getUTCHours(),
+      this.state.startDateTime.getUTCMinutes(),
+      this.state.startDateTime.getUTCSeconds()
+    );
+    const endDateTime = new Date(
+      this.state.endDateTime.getUTCFullYear(),
+      this.state.endDateTime.getUTCMonth(),
+      this.state.endDateTime.getUTCDate(),
+      this.state.endDateTime.getUTCHours(),
+      this.state.endDateTime.getUTCMinutes(),
+      this.state.endDateTime.getUTCSeconds()
+    );
     const maxNumPlayersPerSide = this.state.maxNumPlayersPerSide;
     fetch(
       `http://localhost:5001/pitches/retrievePitches?startDateTime=
@@ -118,6 +134,11 @@ class BookerSearchBar extends React.Component {
             </Form.Row>
           </Form>
         </Jumbotron>
+        <PitchesList
+          pitches={this.state.pitches}
+          bookingStartTime={this.state.startDateTime}
+          bookingEndTime={this.state.endDateTime}
+        />
       </Container>
     );
   }

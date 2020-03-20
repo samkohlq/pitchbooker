@@ -60,7 +60,8 @@ export const retrievePitches = async (req, res) => {
       where: {
         id: { [Sequelize.Op.not]: pitchIdsBookedAtTimeslot },
         maxNumPlayersPerSide: req.query.maxNumPlayersPerSide
-      }
+      },
+      order: [["pricePerHour", "ASC"]]
     });
     res.send(pitches);
   }
