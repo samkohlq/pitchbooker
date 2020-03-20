@@ -7,13 +7,28 @@ import { loginFunction } from "./Login";
 export default class TopNavbar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { loggedIn: false };
+    this.state = { loggedIn: false, organisationName: "" };
   }
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.setState({ loggedIn: true });
+        fetch(
+          `http://localhost:5001/providers/retrieveProvider?currentUserUid=${
+            firebase.auth().currentUser.uid
+          }`
+        ).then(response => {
+          if (response) {
+            response.json().then(json => {
+              if (json.id != null) {
+                this.setState({
+                  organisationName: json.name
+                });
+              }
+            });
+          }
+        });
       } else {
         this.setState({ loggedIn: false });
       }
@@ -25,7 +40,11 @@ export default class TopNavbar extends React.Component {
       <div className="top-navbar-container">
         <Navbar className="justify-content-between" bg="light" expand="lg">
           <Navbar.Brand>Pitch Booker</Navbar.Brand>
-          <Navbar.Brand>{firebase.auth().currentUser.displayName}</Navbar.Brand>
+          <Navbar.Brand>
+            {this.state.organisationName
+              ? this.state.organisationName
+              : firebase.auth().currentUser.displayName}
+          </Navbar.Brand>
         </Navbar>
       </div>
     ) : (

@@ -1,6 +1,6 @@
 import React from "react";
+import { Container } from "react-bootstrap";
 import firebase from "../firebase";
-
 var firebaseui = require("firebaseui");
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
@@ -20,6 +20,10 @@ export const loginFunction = () => {
 
 export default class Login extends React.Component {
   render() {
-    return <div id="firebaseui-auth-container"></div>;
+    return (
+      <Container>
+        <div id="firebaseui-auth-container"></div>
+      </Container>
+    );
   }
 }
