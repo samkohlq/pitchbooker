@@ -19,9 +19,9 @@ export default class BookingSuccess extends React.Component {
           <Card.Body>
             <Card.Title>Your booking has been confirmed!</Card.Title>
             <Card.Text>From: {this.state.bookingStartDate}</Card.Text>
-            <Card.Text>To: {this.state.bookingStartDate}</Card.Text>
-            <Card.Text>Address: {this.state.bookingStartDate}</Card.Text>
-            <Card.Text>Venue: {this.state.bookingStartDate}</Card.Text>
+            <Card.Text>To: {this.state.bookingEndDate}</Card.Text>
+            <Card.Text>Address: {this.state.pitchAddress}</Card.Text>
+            <Card.Text>Venue: {this.state.pitchName}</Card.Text>
             <Card.Text>Total:</Card.Text>
           </Card.Body>
         </Card>
