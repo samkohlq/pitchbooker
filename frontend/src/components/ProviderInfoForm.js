@@ -32,7 +32,7 @@ export default class FieldForm extends React.Component {
     await this.setState({ email: firebase.auth().currentUser.email });
     await this.setState({ currentUserUid: firebase.auth().currentUser.uid });
     fetch(
-      "${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/providers/createProvider",
+      `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/providers/createProvider`,
       {
         method: "POST",
         headers: {
