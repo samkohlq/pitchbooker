@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Col, Container, Form, Jumbotron } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import PitchesList from "../BookerSearchComponents/PitchesList";
+import PitchesList from "./PitchesList";
 import "./BookerSearchBar.css";
 
 class BookerSearchBar extends React.Component {
