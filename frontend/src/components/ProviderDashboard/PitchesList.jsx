@@ -11,18 +11,22 @@ class PitchesList extends React.Component {
     };
   }
 
+  fetchPitches(currentUserUid) {
+    fetch(
+      `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/pitches/retrievePitches?currentUserUid=${currentUserUid}`
+    )
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          pitches: json
+        });
+      });
+  }
+
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
       const currentUserUid = user.uid;
-      fetch(
-        `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/pitches/retrievePitches?currentUserUid=${currentUserUid}`
-      )
-        .then(response => response.json())
-        .then(json => {
-          this.setState({
-            pitches: json
-          });
-        });
+      this.fetchPitches(currentUserUid);
     });
   }
 
@@ -42,7 +46,7 @@ class PitchesList extends React.Component {
             </thead>
             <tbody>
               {this.state.pitches.map((pitch, i) => (
-                <Pitch key={i} pitch={pitch} />
+                <Pitch key={i} pitch={pitch} that={this} />
               ))}
             </tbody>
           </Table>
