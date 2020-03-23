@@ -66,3 +66,12 @@ export const retrievePitches = async (req, res) => {
     res.send(pitches);
   }
 };
+
+export const deletePitch = async (req, res) => {
+  const deleteSuccess = await Pitch.destroy({
+    where: { id: req.query.pitchId }
+  });
+  if (deleteSuccess) {
+    res.send("Delete success!");
+  }
+};

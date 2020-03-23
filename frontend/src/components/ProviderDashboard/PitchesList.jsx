@@ -11,9 +11,22 @@ class PitchesList extends React.Component {
     };
   }
 
+  fetchPitches(currentUserUid) {
+    fetch(
+      `http://localhost:5001/pitches/retrievePitches?currentUserUid=${currentUserUid}`
+    )
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          pitches: json
+        });
+      });
+  }
+
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
       const currentUserUid = user.uid;
+<<<<<<< HEAD
       fetch(
         `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/pitches/retrievePitches?currentUserUid=${currentUserUid}`
       )
@@ -23,6 +36,19 @@ class PitchesList extends React.Component {
             pitches: json
           });
         });
+||||||| merged common ancestors
+      fetch(
+        `http://localhost:5001/pitches/retrievePitches?currentUserUid=${currentUserUid}`
+      )
+        .then(response => response.json())
+        .then(json => {
+          this.setState({
+            pitches: json
+          });
+        });
+=======
+      this.fetchPitches(currentUserUid);
+>>>>>>> Added deletePitch function for both backend and frontend.
     });
   }
 
@@ -42,7 +68,7 @@ class PitchesList extends React.Component {
             </thead>
             <tbody>
               {this.state.pitches.map((pitch, i) => (
-                <Pitch key={i} pitch={pitch} />
+                <Pitch key={i} pitch={pitch} that={this} />
               ))}
             </tbody>
           </Table>
