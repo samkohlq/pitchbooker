@@ -1,12 +1,19 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
 
 class BookingForm extends React.Component {
-  state = {
-    bookerName: "",
-    bookerEmail: "",
-    bookerPhoneNum: ""
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      bookerName: "",
+      bookerEmail: "",
+      bookerPhoneNum: "",
+      bookingStartDate: "",
+      bookingEndDate: "",
+      redirect: null
+    };
+  }
 
   handleNameInputChange = e => {
     this.setState({ bookerName: e.target.value });
@@ -37,11 +44,27 @@ class BookingForm extends React.Component {
           pitchId: this.props.pitch.id
         })
       }
-    );
+    ).then(newBooking => {
+      this.setState({
+        bookingStartDate: newBooking.bookingStartDateTime,
+        bookingEndDate: newBooking.bookingStartDateTime,
+        redirect: "/success"
+      });
+    });
     this.props.onClose();
   };
 
   render() {
+    if (this.state.redirect) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/success",
+            state: { bookingStartDate: "abc", bookingEndDate: "def" }
+          }}
+        />
+      );
+    }
     if (!this.props.show) {
       return null;
     }
