@@ -6,7 +6,13 @@ const Pitch = props => {
   const handleDeleteClick = pitchId => e => {
     e.preventDefault();
     fetch(
-      `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/pitches/deletePitch?pitchId=${pitchId}`
+      `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/pitches/deletePitch?pitchId=${pitchId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
     ).then(response => {
       props.that.fetchPitches(firebase.auth().currentUser.uid);
     });
@@ -30,6 +36,7 @@ const Pitch = props => {
           className="float-right"
           size="sm"
           style={{ marginRight: "10px" }}
+          onClick={props.that.handleEditClick(props.pitch)}
         >
           Edit settings
         </Button>

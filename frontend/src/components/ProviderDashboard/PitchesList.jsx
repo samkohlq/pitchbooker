@@ -2,14 +2,24 @@ import * as firebase from "firebase";
 import React from "react";
 import { Col, Row, Table } from "react-bootstrap";
 import Pitch from "./Pitch";
+import PitchSettingsForm from "./PitchSettingsForm";
 
 class PitchesList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pitches: []
+      pitches: [],
+      pitchSettingsFormVisible: false,
+      pitchToBeEdited: null
     };
   }
+
+  handleEditClick = pitch => e => {
+    this.setState({
+      pitchSettingsFormVisible: !this.state.pitchSettingsFormVisible,
+      pitchToBeEdited: pitch
+    });
+  };
 
   fetchPitches(currentUserUid) {
     fetch(
@@ -50,6 +60,11 @@ class PitchesList extends React.Component {
               ))}
             </tbody>
           </Table>
+          <PitchSettingsForm
+            show={this.state.pitchSettingsFormVisible}
+            onClose={this.handleEditClick}
+            pitch={this.state.pitchToBeEdited}
+          ></PitchSettingsForm>
         </Col>
       </Row>
     );
