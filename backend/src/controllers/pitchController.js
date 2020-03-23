@@ -75,3 +75,18 @@ export const deletePitch = async (req, res) => {
     res.send("Delete success!");
   }
 };
+
+export const updatePitch = async (req, res) => {
+  const pitchUpdate = await Pitch.update(
+    {
+      name: req.body.name,
+      pricePerHour: req.body.pricePerHour,
+      address: req.body.address,
+      maxNumPlayersPerSide: req.body.maxNumPlayersPerSide
+    },
+    {
+      where: { id: req.body.pitchId }
+    }
+  );
+  res.send(updatePitch);
+};
