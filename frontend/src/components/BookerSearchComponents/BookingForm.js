@@ -21,20 +21,23 @@ class BookingForm extends React.Component {
   };
 
   handleClick = e => {
-    fetch(`http://localhost:5001/bookings/createBooking`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        bookerName: this.state.bookerName,
-        bookerEmail: this.state.bookerEmail,
-        bookerPhoneNum: this.state.bookerPhoneNum,
-        bookingStartDateTime: this.props.bookingStartTime,
-        bookingEndDateTime: this.props.bookingEndTime,
-        pitchId: this.props.pitch.id
-      })
-    });
+    fetch(
+      `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/bookings/createBooking`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          bookerName: this.state.bookerName,
+          bookerEmail: this.state.bookerEmail,
+          bookerPhoneNum: this.state.bookerPhoneNum,
+          bookingStartDateTime: this.props.bookingStartTime,
+          bookingEndDateTime: this.props.bookingEndTime,
+          pitchId: this.props.pitch.id
+        })
+      }
+    );
     this.props.onClose();
   };
 

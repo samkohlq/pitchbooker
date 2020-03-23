@@ -26,19 +26,22 @@ class ProviderInfoForm extends React.Component {
 
   handleClick = async () => {
     const currentUserUid = firebase.auth().currentUser.uid;
-    fetch("http://localhost:5001/providers/createProvider", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        name: this.state.name,
-        phoneNum: this.state.phoneNum,
-        address: this.state.address,
-        email: this.state.email,
-        currentUserUid: currentUserUid
-      })
-    });
+    fetch(
+      "${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/providers/createProvider",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: this.state.name,
+          phoneNum: this.state.phoneNum,
+          address: this.state.address,
+          email: this.state.email,
+          currentUserUid: currentUserUid
+        })
+      }
+    );
     // window.location.reload(false);
   };
 

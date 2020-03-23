@@ -14,7 +14,7 @@ class ProviderDashboard extends React.Component {
     firebase.auth().onAuthStateChanged(user => {
       const currentUserUid = user.uid;
       fetch(
-        `http://localhost:5001/providers/retrieveProvider?currentUserUid=${currentUserUid}`
+        `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/providers/retrieveProvider?currentUserUid=${currentUserUid}`
       )
         .then(response => response.json())
         .then(provider => {

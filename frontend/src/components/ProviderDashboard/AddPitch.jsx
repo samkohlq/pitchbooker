@@ -36,7 +36,7 @@ class AddPitch extends React.Component {
   handleClick = () => {
     const currentUserUid = firebase.auth().currentUser.uid;
     fetch(
-      `http://localhost:5001/pitches/createPitch?currentUserUid=${currentUserUid}`,
+      `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/pitches/createPitch?currentUserUid=${currentUserUid}`,
       {
         method: "POST",
         headers: {
