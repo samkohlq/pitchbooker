@@ -5,11 +5,11 @@ import { Button } from "react-bootstrap";
 const Pitch = props => {
   const handleDeleteClick = pitchId => e => {
     e.preventDefault();
-    fetch(`http://localhost:5001/pitches/deletePitch?pitchId=${pitchId}`).then(
-      response => {
-        props.that.fetchPitches(firebase.auth().currentUser.uid);
-      }
-    );
+    fetch(
+      `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/pitches/deletePitch?pitchId=${pitchId}`
+    ).then(response => {
+      props.that.fetchPitches(firebase.auth().currentUser.uid);
+    });
   };
   const { name, pricePerHour, maxNumPlayersPerSide, address, id } = props.pitch;
   return (
