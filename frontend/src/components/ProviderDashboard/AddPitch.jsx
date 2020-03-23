@@ -50,6 +50,7 @@ class AddPitch extends React.Component {
         })
       }
     );
+    window.location.href = "/providerdashboard";
   };
 
   render() {

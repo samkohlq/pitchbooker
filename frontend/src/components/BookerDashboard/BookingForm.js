@@ -56,7 +56,7 @@ class BookingForm extends React.Component {
           bookingEndDate: pitchBook.newBooking.bookingEndDateTime,
           pitchAddress: pitchBook.associatedPitch.address,
           pitchName: pitchBook.associatedPitch.name,
-          redirect: "/success"
+          redirect: "/bookingsuccess"
         });
       });
     this.props.onClose();
@@ -67,7 +67,7 @@ class BookingForm extends React.Component {
       return (
         <Redirect
           to={{
-            pathname: "/success",
+            pathname: "/bookingsuccess",
             state: {
               bookingStartDate: this.state.bookingStartDate,
               bookingEndDate: this.state.bookingEndDate,

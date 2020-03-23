@@ -2,6 +2,8 @@ import React from "react";
 import { Button, Col, Container, Form, Jumbotron } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Login from "../Login";
+import TopNavbar from "../TopNavbar";
 import "./BookerDashboard.css";
 import PitchesList from "./PitchesList";
 
@@ -67,79 +69,83 @@ class BookerDashboard extends React.Component {
 
   render() {
     return (
-      <Container>
-        <Jumbotron className="my-5">
-          <h1 className="mb-4">Search for a soccer pitch</h1>
-          <Form>
-            <Form.Row className="float-left">
-              <Form.Group as={Col}>
-                <Form.Text className="text-muted ml-1 mb-1">From</Form.Text>
-                <DatePicker
-                  className="react-datepicker-container"
-                  selected={this.state.startDateTime}
-                  showTimeSelect
-                  timeFormat="HH:mm"
-                  timeIntervals={30}
-                  timeCaption="time"
-                  dateFormat="dd/MM/yy hh:mm aa"
-                  onChange={date => {
-                    this.handleDateTimeChange("startDateTime", date);
-                  }}
-                />
-              </Form.Group>
-              <Form.Group as={Col}>
-                <Form.Text className="text-muted ml-1 mb-1">To</Form.Text>
-                <DatePicker
-                  className="react-datepicker-container"
-                  selected={this.state.endDateTime}
-                  showTimeSelect
-                  timeFormat="HH:mm"
-                  timeIntervals={30}
-                  timeCaption="time"
-                  dateFormat="dd/MM/yy hh:mm aa"
-                  onChange={date => {
-                    this.handleDateTimeChange("endDateTime", date);
-                  }}
-                />
-              </Form.Group>
-              <Form.Group as={Col}>
-                <Form.Text className="text-muted ml-1 mb-1">
-                  Pitch size
-                </Form.Text>
-                <Form.Control
-                  as="select"
-                  name="maxNumPlayersPerSide"
-                  onChange={this.handleChange}
-                >
-                  <option selected disabled>
-                    --
-                  </option>
-                  <option value="5">5-a-side</option>
-                  <option value="6">6-a-side</option>
-                  <option value="7">7-a-side</option>
-                  <option value="8">8-a-side</option>
-                  <option value="9">9-a-side</option>
-                  <option value="10">10-a-side</option>
-                  <option value="11">11-a-side</option>
-                </Form.Control>
-              </Form.Group>
-            </Form.Row>
-            <Form.Row>
-              <Form.Group>
-                <Form.Text className="text-muted ml-1 mb-1">&nbsp;</Form.Text>
-                <Button className="ml-2" onClick={this.handleClick}>
-                  Search
-                </Button>
-              </Form.Group>
-            </Form.Row>
-          </Form>
-        </Jumbotron>
-        <PitchesList
-          pitches={this.state.pitches}
-          bookingStartTime={this.state.startDateTime}
-          bookingEndTime={this.state.endDateTime}
-        />
-      </Container>
+      <div>
+        <TopNavbar />
+        <Login />
+        <Container>
+          <Jumbotron className="my-5">
+            <h1 className="mb-4">Search for a soccer pitch</h1>
+            <Form>
+              <Form.Row className="float-left">
+                <Form.Group as={Col}>
+                  <Form.Text className="text-muted ml-1 mb-1">From</Form.Text>
+                  <DatePicker
+                    className="react-datepicker-container"
+                    selected={this.state.startDateTime}
+                    showTimeSelect
+                    timeFormat="HH:mm"
+                    timeIntervals={30}
+                    timeCaption="time"
+                    dateFormat="dd/MM/yy hh:mm aa"
+                    onChange={date => {
+                      this.handleDateTimeChange("startDateTime", date);
+                    }}
+                  />
+                </Form.Group>
+                <Form.Group as={Col}>
+                  <Form.Text className="text-muted ml-1 mb-1">To</Form.Text>
+                  <DatePicker
+                    className="react-datepicker-container"
+                    selected={this.state.endDateTime}
+                    showTimeSelect
+                    timeFormat="HH:mm"
+                    timeIntervals={30}
+                    timeCaption="time"
+                    dateFormat="dd/MM/yy hh:mm aa"
+                    onChange={date => {
+                      this.handleDateTimeChange("endDateTime", date);
+                    }}
+                  />
+                </Form.Group>
+                <Form.Group as={Col}>
+                  <Form.Text className="text-muted ml-1 mb-1">
+                    Pitch size
+                  </Form.Text>
+                  <Form.Control
+                    as="select"
+                    name="maxNumPlayersPerSide"
+                    onChange={this.handleChange}
+                  >
+                    <option selected disabled>
+                      --
+                    </option>
+                    <option value="5">5-a-side</option>
+                    <option value="6">6-a-side</option>
+                    <option value="7">7-a-side</option>
+                    <option value="8">8-a-side</option>
+                    <option value="9">9-a-side</option>
+                    <option value="10">10-a-side</option>
+                    <option value="11">11-a-side</option>
+                  </Form.Control>
+                </Form.Group>
+              </Form.Row>
+              <Form.Row>
+                <Form.Group>
+                  <Form.Text className="text-muted ml-1 mb-1">&nbsp;</Form.Text>
+                  <Button className="ml-2" onClick={this.handleClick}>
+                    Search
+                  </Button>
+                </Form.Group>
+              </Form.Row>
+            </Form>
+          </Jumbotron>
+          <PitchesList
+            pitches={this.state.pitches}
+            bookingStartTime={this.state.startDateTime}
+            bookingEndTime={this.state.endDateTime}
+          />
+        </Container>
+      </div>
     );
   }
 }

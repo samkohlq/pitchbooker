@@ -10,7 +10,7 @@ const uiConfig = {
       return true;
     }
   },
-  signInSuccessUrl: "/",
+  signInSuccessUrl: "/providerdashboard",
   signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID]
 };
 
