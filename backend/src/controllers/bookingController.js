@@ -17,8 +17,9 @@ export const createBooking = async (req, res) => {
       }
     })
   ]);
+  const pitchBooking = { newBooking, associatedPitch };
   await newBooking.setPitch(associatedPitch);
-  res.send(newBooking);
+  res.send(pitchBooking);
 };
 
 export const retrieveBookings = async (req, res) => {
