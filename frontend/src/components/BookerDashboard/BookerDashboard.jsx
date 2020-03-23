@@ -2,10 +2,10 @@ import React from "react";
 import { Button, Col, Container, Form, Jumbotron } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "./BookerDashboard.css";
 import PitchesList from "./PitchesList";
-import "./BookerSearchBar.css";
 
-class BookerSearchBar extends React.Component {
+class BookerDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -144,4 +144,4 @@ class BookerSearchBar extends React.Component {
   }
 }
 
-export default BookerSearchBar;
+export default BookerDashboard;

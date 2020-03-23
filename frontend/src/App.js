@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import BookerSearchBar from "./components/BookerDashboard/BookerSearchBar";
+import BookerDashboard from "./components/BookerDashboard/BookerDashboard";
 import BookingSuccess from "./components/BookerDashboard/BookingSuccess";
 import Login from "./components/Login";
 import ProviderDashboard from "./components/ProviderDashboard/ProviderDashboard";
@@ -32,7 +32,7 @@ class App extends React.Component {
     ) : (
       <div>
         <Login />
-        <BookerSearchBar />
+        <BookerDashboard />
       </div>
     );
     return (
