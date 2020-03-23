@@ -42,9 +42,7 @@ class App extends React.Component {
           <Route exact path="/">
             {homepage}
           </Route>
-          <Route path="/success">
-            <BookingSuccess />
-          </Route>
+          <Route path="/success" component={BookingSuccess}></Route>
         </Switch>
       </Router>
     );
