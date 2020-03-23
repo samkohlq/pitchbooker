@@ -42,7 +42,7 @@ class ProviderInfoForm extends React.Component {
         })
       }
     );
-    // window.location.reload(false);
+    window.location.href = "/providerdashboard";
   };
 
   componentDidMount() {

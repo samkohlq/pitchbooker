@@ -1,5 +1,6 @@
 import * as firebase from "firebase";
 import React from "react";
+import TopNavbar from "../TopNavbar";
 import AddPitch from "./AddPitch";
 import PitchesList from "./PitchesList";
 import ProviderInfoForm from "./ProviderInfoForm";
@@ -38,7 +39,12 @@ class ProviderDashboard extends React.Component {
         <ProviderInfoForm />
       </div>
     );
-    return <div>{providerDashboard}</div>;
+    return (
+      <div>
+        <TopNavbar />
+        {providerDashboard}
+      </div>
+    );
   }
 }
 
