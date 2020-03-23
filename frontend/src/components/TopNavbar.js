@@ -15,7 +15,9 @@ export default class TopNavbar extends React.Component {
       if (user) {
         this.setState({ loggedIn: true });
         fetch(
-          `http://localhost:5001/providers/retrieveProvider?currentUserUid=${
+          `${
+            process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL
+          }/providers/retrieveProvider?currentUserUid=${
             firebase.auth().currentUser.uid
           }`
         ).then(response => {

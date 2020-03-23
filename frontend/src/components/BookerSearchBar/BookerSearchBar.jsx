@@ -53,7 +53,7 @@ class BookerSearchBar extends React.Component {
     );
     const maxNumPlayersPerSide = this.state.maxNumPlayersPerSide;
     fetch(
-      `http://localhost:5001/pitches/retrievePitches?startDateTime=
+      `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/pitches/retrievePitches?startDateTime=
       ${startDateTime}&endDateTime=${endDateTime}&maxNumPlayersPerSide=${maxNumPlayersPerSide}`
     )
       .then(response => response.json())
