@@ -11,6 +11,8 @@ class BookingForm extends React.Component {
       bookerPhoneNum: "",
       bookingStartDate: "",
       bookingEndDate: "",
+      pitchAddress: "",
+      pitchName: "",
       redirect: null
     };
   }
@@ -44,13 +46,19 @@ class BookingForm extends React.Component {
           pitchId: this.props.pitch.id
         })
       }
-    ).then(newBooking => {
-      this.setState({
-        bookingStartDate: newBooking.bookingStartDateTime,
-        bookingEndDate: newBooking.bookingStartDateTime,
-        redirect: "/success"
+    )
+      .then(response => {
+        return response.json();
+      })
+      .then(pitchBook => {
+        this.setState({
+          bookingStartDate: pitchBook.newBooking.bookingStartDateTime,
+          bookingEndDate: pitchBook.newBooking.bookingEndDateTime,
+          pitchAddress: pitchBook.associatedPitch.address,
+          pitchName: pitchBook.associatedPitch.name,
+          redirect: "/success"
+        });
       });
-    });
     this.props.onClose();
   };
 
@@ -60,7 +68,12 @@ class BookingForm extends React.Component {
         <Redirect
           to={{
             pathname: "/success",
-            state: { bookingStartDate: "abc", bookingEndDate: "def" }
+            state: {
+              bookingStartDate: this.state.bookingStartDate,
+              bookingEndDate: this.state.bookingEndDate,
+              pitchAddress: this.state.pitchAddress,
+              pitchName: this.state.pitchName
+            }
           }}
         />
       );
