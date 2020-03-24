@@ -1,6 +1,7 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import firebase from "../firebase";
+
 var firebaseui = require("firebaseui");
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
