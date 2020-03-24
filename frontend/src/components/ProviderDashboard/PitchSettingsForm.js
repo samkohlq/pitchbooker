@@ -95,7 +95,7 @@ class PitchSettingsForm extends React.Component {
         >
           <Form>
             <Form.Group style={{ paddingTop: 10 }}>
-              <Form.Label>Pitch Name</Form.Label>
+              <Form.Label id="pitchNameLabel">Pitch Name</Form.Label>
               <Form.Control
                 placeholder={this.props.pitch.name}
                 value={this.state.pitchName}
@@ -103,7 +103,7 @@ class PitchSettingsForm extends React.Component {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Price Per Hour</Form.Label>
+              <Form.Label id="pricePerHourLabel">Price Per Hour</Form.Label>
               <Form.Control
                 placeholder={this.props.pitch.pricePerHour}
                 value={this.state.pricePerHour}
@@ -111,7 +111,9 @@ class PitchSettingsForm extends React.Component {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Max Players Per Side</Form.Label>
+              <Form.Label id="maxPlayersPerSideLabel">
+                Max Players Per Side
+              </Form.Label>
               <Form.Control
                 placeholder={this.props.pitch.maxNumPlayersPerSide}
                 value={this.state.maxNumPlayersPerSide}
@@ -119,7 +121,7 @@ class PitchSettingsForm extends React.Component {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Address</Form.Label>
+              <Form.Label id="addressLabel">Address</Form.Label>
               <Form.Control
                 placeholder={this.props.pitch.address}
                 value={this.state.address}
