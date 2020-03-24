@@ -7,11 +7,11 @@
   },
   "scripts": {
     "build": "npm run clean && npm run build-babel",
-    "build-babel": "babel -d ./build ./src -s --copy-files",
+    "build-babel": "babel -d ./build ./src -s --copy-files && rm -rf ./build/tests",
     "clean": "rm -rf build",
     "start": "npm run build && node ./build/bin/www",
     "start:dev": "nodemon --exec babel-node ./src/bin/www",
-    "test": "jest"
+    "test": "jest --runInBand --detectOpenHandles"
   },
   "dependencies": {
     "@babel/cli": "^7.8.4",
