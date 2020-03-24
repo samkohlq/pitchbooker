@@ -1,5 +1,6 @@
 import * as firebase from "firebase";
 import React from "react";
+import { Container, Spinner } from "react-bootstrap";
 import TopNavbar from "../TopNavbar";
 import AddPitch from "./AddPitch";
 import PitchesList from "./PitchesList";
@@ -8,7 +9,7 @@ import ProviderInfoForm from "./ProviderInfoForm";
 class ProviderDashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { providerSubmittedOrgnisationInfo: false };
+    this.state = { providerSubmittedOrgnisationInfo: false, loading: true };
   }
 
   componentDidMount() {
@@ -24,21 +25,40 @@ class ProviderDashboard extends React.Component {
           } else {
             this.setState({ providerSubmittedOrgnisationInfo: false });
           }
+          this.setState({ loading: false });
         });
     });
   }
 
   render() {
-    const providerDashboard = this.state.providerSubmittedOrgnisationInfo ? (
-      <div>
-        <AddPitch />
-        <PitchesList />
-      </div>
-    ) : (
-      <div>
-        <ProviderInfoForm />
-      </div>
-    );
+    let providerDashboard;
+    if (this.state.loading) {
+      providerDashboard = (
+        <Container>
+          <Spinner
+            className="my-5"
+            animation="border"
+            role="status"
+            variant="secondary"
+          >
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        </Container>
+      );
+    } else if (this.state.providerSubmittedOrgnisationInfo) {
+      providerDashboard = (
+        <div>
+          <AddPitch />
+          <PitchesList />
+        </div>
+      );
+    } else {
+      providerDashboard = (
+        <div>
+          <ProviderInfoForm />
+        </div>
+      );
+    }
     return (
       <div>
         <TopNavbar />
