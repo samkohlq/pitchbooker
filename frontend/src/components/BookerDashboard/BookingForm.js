@@ -55,7 +55,24 @@ class BookingForm extends React.Component {
           associatedPitch: pitchBooking.associatedPitch,
           redirect: "/bookingsuccess"
         });
-      });
+      })
+      .then(
+        fetch(
+          `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/emails/sendBookingConfirmationEmail`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              bookerName: this.state.bookerName,
+              bookerEmail: this.state.bookerEmail,
+              bookingStartDateTime: this.props.bookingStartTime,
+              bookingEndDateTime: this.props.bookingEndTime
+            })
+          }
+        )
+      );
     this.props.onClose();
   };
 

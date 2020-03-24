@@ -6,6 +6,7 @@ import "core-js/stable";
 import cors from "cors";
 import "regenerator-runtime/runtime";
 import bookingRouter from "./routes/bookingRouter";
+import emailRouter from "./routes/emailRouter";
 import pitchRouter from "./routes/pitchRouter";
 import providerRouter from "./routes/providerRouter";
 
@@ -26,5 +27,6 @@ app.use("/users", usersRouter);
 app.use("/pitches", pitchRouter);
 app.use("/providers", providerRouter);
 app.use("/bookings", bookingRouter);
+app.use("/emails", emailRouter);
 
 module.exports = app;
