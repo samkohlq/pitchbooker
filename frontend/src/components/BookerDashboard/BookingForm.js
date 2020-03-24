@@ -9,10 +9,8 @@ class BookingForm extends React.Component {
       bookerName: "",
       bookerEmail: "",
       bookerPhoneNum: "",
-      bookingStartDate: "",
-      bookingEndDate: "",
-      pitchAddress: "",
-      pitchName: "",
+      newBooking: null,
+      associatedPitch: null,
       redirect: null
     };
   }
@@ -50,12 +48,11 @@ class BookingForm extends React.Component {
       .then(response => {
         return response.json();
       })
-      .then(pitchBook => {
+      // pitchBooking is an object containing the new booking and the associated pitch
+      .then(pitchBooking => {
         this.setState({
-          bookingStartDate: pitchBook.newBooking.bookingStartDateTime,
-          bookingEndDate: pitchBook.newBooking.bookingEndDateTime,
-          pitchAddress: pitchBook.associatedPitch.address,
-          pitchName: pitchBook.associatedPitch.name,
+          newBooking: pitchBooking.newBooking,
+          associatedPitch: pitchBooking.associatedPitch,
           redirect: "/bookingsuccess"
         });
       })
@@ -80,16 +77,29 @@ class BookingForm extends React.Component {
   };
 
   render() {
+    let totalHours = 0;
+    if (this.props.bookingEndTime && this.props.bookingStartTime) {
+      totalHours =
+        (this.props.bookingEndTime.getTime() -
+          this.props.bookingStartTime.getTime()) /
+        1000 /
+        60 /
+        60;
+    }
+    const totalPrice = this.props.pitch
+      ? `$${(this.props.pitch.pricePerHour * totalHours).toFixed(2)}`
+      : "";
     if (this.state.redirect) {
       return (
         <Redirect
           to={{
             pathname: "/bookingsuccess",
             state: {
-              bookingStartDate: this.state.bookingStartDate,
-              bookingEndDate: this.state.bookingEndDate,
-              pitchAddress: this.state.pitchAddress,
-              pitchName: this.state.pitchName
+              bookingStartDate: this.state.newBooking.bookingStartDateTime,
+              bookingEndDate: this.state.newBooking.bookingEndDateTime,
+              pitchAddress: this.state.associatedPitch.address,
+              pitchName: this.state.associatedPitch.name,
+              totalPrice: totalPrice
             }
           }}
         />
@@ -130,9 +140,9 @@ class BookingForm extends React.Component {
           }}
         >
           <Form>
-            You have selected a booking of {this.props.pitch.name} from{" "}
-            {this.props.bookingStartTime.toString()} to{" "}
-            {this.props.bookingEndTime.toString()}.
+            {`You have selected a booking of ${this.props.pitch.name} from 
+            ${this.props.bookingStartTime.toString()} to 
+            ${this.props.bookingEndTime.toString()}. \n Total price: ${totalPrice}`}
             <Form.Group style={{ paddingTop: 10 }}>
               <Form.Label>Name</Form.Label>
               <Form.Control
