@@ -88,5 +88,5 @@ export const updatePitch = async (req, res) => {
       where: { id: req.body.pitchId }
     }
   );
-  res.send(updatePitch);
+  res.send(pitchUpdate);
 };
