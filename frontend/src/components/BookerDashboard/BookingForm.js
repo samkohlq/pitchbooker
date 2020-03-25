@@ -144,7 +144,7 @@ class BookingForm extends React.Component {
             ${this.props.bookingStartTime.toString()} to 
             ${this.props.bookingEndTime.toString()}. \n Total price: ${totalPrice}`}
             <Form.Group style={{ paddingTop: 10 }}>
-              <Form.Label>Name</Form.Label>
+              <Form.Label id="nameLabel">Name</Form.Label>
               <Form.Control
                 placeholder="Enter name"
                 value={this.state.bookerName}
@@ -152,7 +152,7 @@ class BookingForm extends React.Component {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Email</Form.Label>
+              <Form.Label id="emailLabel">Email</Form.Label>
               <Form.Control
                 placeholder="Enter email"
                 value={this.state.bookerEmail}
@@ -160,7 +160,7 @@ class BookingForm extends React.Component {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Phone Number</Form.Label>
+              <Form.Label id="phoneNumLabel">Phone Number</Form.Label>
               <Form.Control
                 placeholder="Enter phone number"
                 value={this.state.bookerPhoneNum}
