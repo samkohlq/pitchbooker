@@ -3,7 +3,7 @@ import React from "react";
 import PitchSettingsForm from "../components/ProviderDashboard/PitchSettingsForm";
 
 it("Pitch settings form can render without crashing", () => {
-  let onCloseMock = jest.fn();
+  const onCloseMock = jest.fn();
   const pitch = {
     name: "test",
     pricePerHour: "123",

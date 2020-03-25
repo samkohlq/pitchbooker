@@ -22,7 +22,7 @@ class PitchesList extends React.Component {
   };
 
   fetchPitches(currentUserUid) {
-    fetch(
+    return fetch(
       `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/pitches/retrievePitches?currentUserUid=${currentUserUid}`
     )
       .then(response => response.json())
@@ -56,7 +56,7 @@ class PitchesList extends React.Component {
             </thead>
             <tbody>
               {this.state.pitches.map((pitch, i) => (
-                <Pitch key={i} pitch={pitch} that={this} />
+                <Pitch id="pitch" key={i} pitch={pitch} that={this} />
               ))}
             </tbody>
           </Table>

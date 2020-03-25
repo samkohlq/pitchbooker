@@ -46,6 +46,7 @@ class PitchesList extends React.Component {
                       <td>
                         <Button
                           className="float-right"
+                          id={`bookbutton${i}`}
                           size="sm"
                           onClick={this.handleClick(pitch)}
                         >
