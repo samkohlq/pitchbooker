@@ -12,6 +12,34 @@ afterAll(() => {
   models.sequelize.close();
 });
 
+test("create pitchAPI creates new entry in Pitches table", async () => {
+  const createProviderResponse = await request(app)
+    .post("/providers/createProvider")
+    .send({
+      name: "Test Provider Name",
+      address: "Test Provider Road",
+      email: "testprovider@testprovider.com",
+      phoneNum: "12345678",
+      currentUserUid: "abcde"
+    })
+    .set("Accept", "application/json");
+  expect(createProviderResponse.statusCode).toBe(200);
+  const createPitchResponse = await request(app)
+    .post("/pitches/createPitch?currentUserUid=abcde")
+    .send({
+      name: "Test Pitch",
+      pricePerHour: "123",
+      address: "Test Pitch Road",
+      maxNumPlayersPerSide: "10"
+    })
+    .set("Accept", "application/json");
+  expect(createPitchResponse.statusCode).toBe(200);
+  expect(createPitchResponse.body.name).toBe("Test Pitch");
+  expect(createPitchResponse.body.pricePerHour).toBe(123);
+  expect(createPitchResponse.body.address).toBe("Test Pitch Road");
+  expect(createPitchResponse.body.maxNumPlayersPerSide).toBe(10);
+});
+
 test("retrieve pitches API to return pitch details if query has currentUserUid, else return pitches based on maximum number of players per side and booking availability.", async () => {
   const createProviderResponse = await request(app)
     .post("/providers/createProvider")
