@@ -2,16 +2,22 @@ version: 2.1
 orbs:
   node: circleci/node@1.1.6
 jobs:
-  build-and-test:
+  test-pitchbooker-frontend:
     executor:
       name: node/default
     steps:
       - checkout
       - node/with-cache:
+          cache-key: frontend/package.json
+          dir: ~/project/frontend/node_modules
           steps:
-            - run: npm install
-            - run: npm test
+            - run:
+                command: npm install
+                working_directory: frontend
+            - run:
+                command: npm test
+                working_directory: frontend
 workflows:
-    build-and-test:
-      jobs:
-        - build-and-test
+  build-and-test:
+    jobs:
+      - test-pitchbooker-frontend
