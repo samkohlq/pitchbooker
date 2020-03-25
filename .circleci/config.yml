@@ -17,7 +17,33 @@ jobs:
             - run:
                 command: npm test
                 working_directory: frontend
+  test-pitchbooker-backend:
+    docker:
+      - image: circleci/node:12
+        environment:
+          NODE_ENV: test
+      - image: circleci/postgres:12
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: pitchbooker_test_env
+    steps:
+      - checkout
+      - node/with_cache:
+          cache-key: backend/package.json
+          dir: ~/project/backend/node_modules
+          steps:
+            - run:
+                command: npm install
+                working_directory: backend
+            - run:
+                command: npx sequelize db:migrate
+                working_directory: backend
+            - run:
+                command: npm test
+                working_directory: backend
 workflows:
   build-and-test:
     jobs:
       - test-pitchbooker-frontend
+      - test-pitchbooker-backend
