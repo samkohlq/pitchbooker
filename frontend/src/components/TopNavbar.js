@@ -3,6 +3,7 @@ import { NavDropdown } from "react-bootstrap";
 import Navbar from "react-bootstrap/Navbar";
 import firebase from "../firebase";
 import { loginFunction } from "./Login";
+import Logout from "./Logout";
 
 export default class TopNavbar extends React.Component {
   constructor(props) {
@@ -40,13 +41,17 @@ export default class TopNavbar extends React.Component {
   render() {
     const providerLogin = this.state.loggedIn ? (
       <div className="top-navbar-container">
-        <Navbar className="justify-content-between" bg="light" expand="lg">
+        <Navbar className="justify-content-between" bg="light" expand="med">
           <Navbar.Brand>Pitch Booker</Navbar.Brand>
-          <Navbar.Brand>
-            {this.state.organisationName
-              ? this.state.organisationName
-              : firebase.auth().currentUser.displayName}
-          </Navbar.Brand>
+          {/* BUG(Perry): i put the two component below in a nested navbar to squeeze it to the right. however, it makes the main navbar bigger than normal */}
+          <Navbar expand="sm">
+            <Logout />
+            <Navbar.Brand>
+              {this.state.organisationName
+                ? this.state.organisationName
+                : firebase.auth().currentUser.displayName}
+            </Navbar.Brand>
+          </Navbar>
         </Navbar>
       </div>
     ) : (
