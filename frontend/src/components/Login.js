@@ -11,6 +11,7 @@ const uiConfig = {
       return true;
     }
   },
+  credentialHelper: firebaseui.auth.CredentialHelper.NONE,
   signInSuccessUrl: "/providerdashboard",
   signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID]
 };

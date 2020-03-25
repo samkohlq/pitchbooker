@@ -8,7 +8,10 @@ import Logout from "./Logout";
 export default class TopNavbar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { loggedIn: false, organisationName: "" };
+    this.state = {
+      loggedIn: firebase.auth().currentUser ? true : false,
+      organisationName: ""
+    };
   }
 
   componentDidMount() {
