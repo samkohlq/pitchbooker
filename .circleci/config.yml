@@ -29,7 +29,7 @@ jobs:
           POSTGRES_DB: pitchbooker_test_env
     steps:
       - checkout
-      - node/with_cache:
+      - node/with-cache:
           cache-key: backend/package.json
           dir: ~/project/backend/node_modules
           steps:
