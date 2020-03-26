@@ -29,7 +29,7 @@ jest.mock("firebase-admin", () => ({
 }));
 
 jest.mock(
-  "./serviceAccountKey.json",
+  "../serviceAccountKey.json",
   () => ({
     type: "",
     project_id: "",
