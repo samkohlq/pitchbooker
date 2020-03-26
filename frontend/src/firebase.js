@@ -3,14 +3,14 @@ import "firebase/auth";
 import "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCDDzEsr55wxwuwlUPJ6kdIJnrqVXj698Y",
-  authDomain: "pitch-booker.firebaseapp.com",
-  databaseURL: "https://pitch-booker.firebaseio.com",
-  projectId: "pitch-booker",
-  storageBucket: "pitch-booker.appspot.com",
-  messagingSenderId: "373850113183",
-  appId: "1:373850113183:web:9cdc36b686c0cc53478eaa",
-  measurementId: "G-P692PWPJC6"
+  apiKey: "AIzaSyDg8bOKfQDEDSjvcPd1b1WJvv_t5mij0fE",
+  authDomain: "pitchbooker-6c632.firebaseapp.com",
+  databaseURL: "https://pitchbooker-6c632.firebaseio.com",
+  projectId: "pitchbooker-6c632",
+  storageBucket: "pitchbooker-6c632.appspot.com",
+  messagingSenderId: "80970569924",
+  appId: "1:80970569924:web:930f02960d5e49a77a1191",
+  measurementId: "G-DGCF4M4RJ8"
 };
 
 firebase.initializeApp(firebaseConfig);

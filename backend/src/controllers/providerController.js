@@ -1,4 +1,5 @@
 import { Provider } from "../db/models";
+import admin from "../firebase";
 
 export const createProvider = async (req, res) => {
   const newProvider = await Promise.all([
@@ -16,16 +17,33 @@ export const createProvider = async (req, res) => {
 };
 
 export const retrieveProvider = async (req, res) => {
-  const provider = await Provider.findOne({
-    where: {
-      uid: req.query.currentUserUid
+  let idToken = req.headers["authorization"];
+
+  if (idToken) {
+    if (idToken.startsWith("Bearer ")) {
+      idToken = idToken.slice(7, idToken.length);
     }
-  }).catch(error => {
-    console.log(error);
-  });
-  if (provider) {
-    res.send(provider);
+    admin
+      .auth()
+      .verifyIdToken(idToken)
+      .then(async function(decodedToken) {
+        const provider = await Provider.findOne({
+          where: {
+            uid: req.query.currentUserUid
+          }
+        }).catch(error => {
+          res.send(error);
+        });
+        if (provider) {
+          res.send(provider);
+        } else {
+          res.send({ id: null });
+        }
+      })
+      .catch(function(error) {
+        res.send(error);
+      });
   } else {
-    res.send({ id: null });
+    res.send(401);
   }
 };

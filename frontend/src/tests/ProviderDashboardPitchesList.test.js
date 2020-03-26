@@ -38,6 +38,6 @@ it("renders pitches data", async () => {
   const wrapper = mount(<PitchesList />);
   await wrapper.instance().fetchPitches(1);
   expect(wrapper.state("pitches")).toBe(fakePitches);
-
+  wrapper.unmount();
   global.fetch.mockRestore();
 });

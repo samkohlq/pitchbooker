@@ -2,6 +2,32 @@ import request from "supertest";
 import app from "../app";
 import models from "../db/models";
 
+jest.mock("firebase-admin", () => ({
+  credential: {
+    cert(serviceaccount) {
+      return true;
+    }
+  },
+  initializeApp(credential) {
+    return jest.fn();
+  },
+  auth() {
+    return {
+      verifyIdToken(idToken) {
+        return new Promise((resolve, reject) => {
+          process.nextTick(() =>
+            idToken
+              ? resolve(idToken)
+              : reject({
+                  error: "idToken not found."
+                })
+          );
+        });
+      }
+    };
+  }
+}));
+
 afterEach(async () => {
   await models.Provider.destroy({
     where: {}
@@ -45,14 +71,14 @@ test("retrieve provider API retrieve provider details if provider details exist 
     })
     .set("Accept", "application/json");
   expect(createProviderResponse.statusCode).toBe(200);
-  const retrieveProviderabcResponse = await request(app).get(
-    "/providers/retrieveProvider?currentUserUid=abc"
-  );
+  const retrieveProviderabcResponse = await request(app)
+    .get("/providers/retrieveProvider?currentUserUid=abc")
+    .set("Authorization", "Bearer 123");
   expect(retrieveProviderabcResponse.statusCode).toBe(200);
   expect(retrieveProviderabcResponse.body.id).toBe(null);
-  const retrieveProviderabcdeResponse = await request(app).get(
-    "/providers/retrieveProvider?currentUserUid=abcde"
-  );
+  const retrieveProviderabcdeResponse = await request(app)
+    .get("/providers/retrieveProvider?currentUserUid=abcde")
+    .set("Authorization", "Bearer 123");
   expect(retrieveProviderabcdeResponse.statusCode).toBe(200);
   expect(retrieveProviderabcdeResponse.body.name).toBe("Test Provider Name");
   expect(retrieveProviderabcdeResponse.body.address).toBe("Test Provider Road");
@@ -61,4 +87,8 @@ test("retrieve provider API retrieve provider details if provider details exist 
   );
   expect(retrieveProviderabcdeResponse.body.phoneNum).toBe("12345678");
   expect(retrieveProviderabcdeResponse.body.uid).toBe("abcde");
+  const retrieveProviderabcdeResponseNotAuthorized = await request(app).get(
+    "/providers/retrieveProvider?currentUserUid=abcde"
+  );
+  expect(retrieveProviderabcdeResponseNotAuthorized.statusCode).toBe(401);
 });
