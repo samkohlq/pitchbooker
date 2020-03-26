@@ -11,13 +11,16 @@ export default class BookingSuccess extends React.Component {
       totalPrice: props.location.state.totalPrice
     };
   }
+
   //Todo(Perry): Calculate total and display it in confirmation page. Make this card centered.
   render() {
     return (
       <div>
-        <Card style={{ width: "18rem" }}>
+        <Card id="card-container" style={{ width: "18rem" }}>
           <Card.Body>
-            <Card.Title>Your booking has been confirmed!</Card.Title>
+            <Card.Title id="card-title">
+              Your booking has been confirmed!
+            </Card.Title>
             <Card.Text>
               From: {this.state.bookingStartDate.toLocaleString()}
             </Card.Text>
