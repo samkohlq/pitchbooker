@@ -18,6 +18,32 @@ afterAll(() => {
   models.sequelize.close();
 });
 
+jest.mock("firebase-admin", () => ({
+  credential: {
+    cert(serviceaccount) {
+      return true;
+    }
+  },
+  initializeApp(credential) {
+    return jest.fn();
+  },
+  auth() {
+    return {
+      verifyIdToken(idToken) {
+        return new Promise((resolve, reject) => {
+          process.nextTick(() =>
+            idToken
+              ? resolve(idToken)
+              : reject({
+                  error: "idToken not found."
+                })
+          );
+        });
+      }
+    };
+  }
+}));
+
 jest.mock(
   "../serviceAccountKey.json",
   () => ({
