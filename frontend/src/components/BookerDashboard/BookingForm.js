@@ -28,7 +28,7 @@ class BookingForm extends React.Component {
   };
 
   handleClick = e => {
-    fetch(
+    const bookingCompletionPromise = fetch(
       `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/bookings/createBooking`,
       {
         method: "POST",
@@ -55,9 +55,7 @@ class BookingForm extends React.Component {
           associatedPitch: pitchBooking.associatedPitch,
           redirect: "/bookingsuccess"
         });
-      })
-      .then(
-        fetch(
+        return fetch(
           `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/emails/sendBookingConfirmationEmail`,
           {
             method: "POST",
@@ -71,9 +69,11 @@ class BookingForm extends React.Component {
               bookingEndDateTime: this.props.bookingEndTime
             })
           }
-        )
-      );
+        );
+      });
     this.props.onClose();
+    // return the promise from fetch for unit test
+    return bookingCompletionPromise;
   };
 
   render() {
@@ -167,7 +167,12 @@ class BookingForm extends React.Component {
                 onChange={this.handlePhoneNumInputChange}
               />
             </Form.Group>
-            <Button variant="primary" type="submit" onClick={this.handleClick}>
+            <Button
+              id="book-button"
+              variant="primary"
+              type="submit"
+              onClick={this.handleClick}
+            >
               Book
             </Button>
           </Form>

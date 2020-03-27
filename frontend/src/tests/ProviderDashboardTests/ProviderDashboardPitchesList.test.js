@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
 import React from "react";
-import PitchesList from "../components/ProviderDashboard/PitchesList";
+import PitchesList from "../../components/ProviderDashboard/PitchesList";
 
 jest.mock("firebase", () => ({
   auth() {
