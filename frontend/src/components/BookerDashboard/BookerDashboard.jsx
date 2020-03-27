@@ -2,7 +2,6 @@ import React from "react";
 import { Button, Col, Container, Form, Jumbotron } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Login from "../Login";
 import TopNavbar from "../TopNavbar";
 import "./BookerDashboard.css";
 import PitchesList from "./PitchesList";
@@ -71,7 +70,7 @@ class BookerDashboard extends React.Component {
     return (
       <div>
         <TopNavbar />
-        <Login />
+        {/* <Login /> */}
         <Container>
           <Jumbotron className="my-5">
             <h1 className="mb-4">Search for a soccer pitch</h1>
