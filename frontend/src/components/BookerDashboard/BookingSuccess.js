@@ -1,5 +1,7 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
+import TopNavbar from "../TopNavbar";
+
 export default class BookingSuccess extends React.Component {
   constructor(props) {
     super(props);
@@ -16,7 +18,8 @@ export default class BookingSuccess extends React.Component {
   render() {
     return (
       <div>
-        <Card id="card-container" style={{ width: "18rem" }}>
+        <TopNavbar />
+        <Card className="m-5" id="card-container" style={{ width: "18rem" }}>
           <Card.Body>
             <Card.Title id="card-title">
               Your booking has been confirmed!

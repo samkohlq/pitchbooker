@@ -60,7 +60,7 @@ export default class TopNavbar extends React.Component {
     ) : (
       <div className="top-navbar-container">
         <Navbar className="justify-content-between" bg="light" expand="lg">
-          <Navbar.Brand>Pitch Booker</Navbar.Brand>
+          <Navbar.Brand href="/">Pitch Booker</Navbar.Brand>
           <NavDropdown title="Field Providers">
             <NavDropdown.Item onClick={() => loginFunction()}>
               Login
