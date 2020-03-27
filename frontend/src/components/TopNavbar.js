@@ -19,7 +19,7 @@ export default class TopNavbar extends React.Component {
       if (user) {
         const idToken = await firebase
           .auth()
-          .currentUser.getIdToken(true)
+          .currentUser.getIdToken()
           .then(function(idToken) {
             return idToken;
           });

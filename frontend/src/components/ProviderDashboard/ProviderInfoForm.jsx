@@ -28,7 +28,7 @@ class ProviderInfoForm extends React.Component {
     const currentUserUid = firebase.auth().currentUser.uid;
     const idToken = await firebase
       .auth()
-      .currentUser.getIdToken(true)
+      .currentUser.getIdToken()
       .then(function(idToken) {
         return idToken;
       });

@@ -18,7 +18,7 @@ class ProviderDashboard extends React.Component {
         const currentUserUid = user.uid;
         const idToken = await firebase
           .auth()
-          .currentUser.getIdToken(true)
+          .currentUser.getIdToken()
           .then(function(idToken) {
             return idToken;
           });

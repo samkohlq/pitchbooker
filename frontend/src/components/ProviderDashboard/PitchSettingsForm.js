@@ -38,7 +38,7 @@ class PitchSettingsForm extends React.Component {
   async updatePitch() {
     const idToken = await firebase
       .auth()
-      .currentUser.getIdToken(true)
+      .currentUser.getIdToken()
       .then(function(idToken) {
         return idToken;
       });
