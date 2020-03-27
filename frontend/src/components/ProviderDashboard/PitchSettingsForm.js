@@ -30,13 +30,19 @@ class PitchSettingsForm extends React.Component {
   };
 
   handleClick = async e => {
+    const updatePitch = await this.updatePitch();
+    console.log(updatePitch);
+    this.props.onClose(this.props.pitch);
+  };
+
+  async updatePitch() {
     const idToken = await firebase
       .auth()
       .currentUser.getIdToken(true)
       .then(function(idToken) {
         return idToken;
       });
-    fetch(
+    return await fetch(
       `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/pitches/updatePitch`,
       {
         method: "PUT",
@@ -63,8 +69,7 @@ class PitchSettingsForm extends React.Component {
     ).then(response => {
       return response.json();
     });
-    this.props.onClose();
-  };
+  }
 
   render() {
     if (!this.props.show) {

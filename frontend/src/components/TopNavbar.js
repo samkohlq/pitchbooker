@@ -15,15 +15,24 @@ export default class TopNavbar extends React.Component {
   }
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged(async user => {
       if (user) {
+        const idToken = await firebase
+          .auth()
+          .currentUser.getIdToken(true)
+          .then(function(idToken) {
+            return idToken;
+          });
         this.setState({ loggedIn: true });
         fetch(
           `${
             process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL
           }/providers/retrieveProvider?currentUserUid=${
             firebase.auth().currentUser.uid
-          }`
+          }`,
+          {
+            headers: { Authorization: `Bearer ${idToken}` }
+          }
         ).then(response => {
           if (response) {
             response.json().then(json => {
@@ -52,7 +61,9 @@ export default class TopNavbar extends React.Component {
             <Navbar.Brand>
               {this.state.organisationName
                 ? this.state.organisationName
-                : firebase.auth().currentUser.displayName}
+                : firebase.auth().currentUser
+                ? firebase.auth().currentUser.displayName
+                : ""}
             </Navbar.Brand>
           </Navbar>
         </Navbar>

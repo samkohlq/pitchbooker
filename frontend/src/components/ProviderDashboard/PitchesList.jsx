@@ -46,8 +46,10 @@ class PitchesList extends React.Component {
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
-      const currentUserUid = user.uid;
-      this.fetchPitches(currentUserUid);
+      if (user) {
+        const currentUserUid = user.uid;
+        this.fetchPitches(currentUserUid);
+      }
     });
   }
 
