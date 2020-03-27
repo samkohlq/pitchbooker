@@ -55,7 +55,7 @@ jest.mock(
   { virtual: true }
 );
 
-test("create pitchAPI creates new entry in Pitches table", async () => {
+test("create pitch API creates new entry in Pitches table", async () => {
   const createProviderResponse = await request(app)
     .post("/providers/createProvider")
     .send({

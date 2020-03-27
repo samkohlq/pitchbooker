@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
 import React from "react";
-import PitchSettingsForm from "../components/ProviderDashboard/PitchSettingsForm";
+import PitchSettingsForm from "../../components/ProviderDashboard/PitchSettingsForm";
 
 it("Pitch settings form can render without crashing", () => {
   const onCloseMock = jest.fn();
