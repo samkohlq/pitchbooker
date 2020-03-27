@@ -1,5 +1,8 @@
 import React from "react";
-import { Container } from "react-bootstrap";
+import { NavDropdown } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "../firebase";
 
 var firebaseui = require("firebaseui");
@@ -15,17 +18,34 @@ const uiConfig = {
   signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID]
 };
 
-export const loginFunction = () => {
-  var ui = new firebaseui.auth.AuthUI(firebase.auth());
-  ui.start("#firebaseui-auth-container", uiConfig);
-};
+function Login() {
+  const [show, setShow] = React.useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  return (
+    <>
+      <NavDropdown.Item
+        variant="primary"
+        onClick={() => {
+          handleShow();
+        }}
+      >
+        Login
+      </NavDropdown.Item>
 
-export default class Login extends React.Component {
-  render() {
-    return (
-      <Container>
-        <div id="firebaseui-auth-container"></div>
-      </Container>
-    );
-  }
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Body>
+          <StyledFirebaseAuth
+            uiConfig={uiConfig}
+            firebaseAuth={firebase.auth()}
+          />
+        </Modal.Body>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </Modal>
+    </>
+  );
 }
+
+export default Login;
