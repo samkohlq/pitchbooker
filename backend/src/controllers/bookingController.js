@@ -39,7 +39,7 @@ export const retrieveBookings = async (req, res) => {
         res.send(bookings);
       })
       .catch(function(error) {
-        res.send(error);
+        res.sendStatus(401);
       });
   } else {
     res.sendStatus(401);
