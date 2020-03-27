@@ -2,7 +2,7 @@ import React from "react";
 import { NavDropdown } from "react-bootstrap";
 import Navbar from "react-bootstrap/Navbar";
 import firebase from "../firebase";
-import { loginFunction } from "./Login";
+import Login from "./Login";
 import Logout from "./Logout";
 
 export default class TopNavbar extends React.Component {
@@ -62,8 +62,8 @@ export default class TopNavbar extends React.Component {
         <Navbar className="justify-content-between" bg="light" expand="lg">
           <Navbar.Brand href="/">Pitch Booker</Navbar.Brand>
           <NavDropdown title="Field Providers">
-            <NavDropdown.Item onClick={() => loginFunction()}>
-              Login
+            <NavDropdown.Item>
+              <Login />
             </NavDropdown.Item>
           </NavDropdown>
         </Navbar>
