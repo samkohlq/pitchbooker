@@ -70,7 +70,6 @@ class BookerDashboard extends React.Component {
     return (
       <div>
         <TopNavbar />
-        {/* <Login /> */}
         <Container>
           <Jumbotron className="my-5">
             <h1 className="mb-4">Search for a soccer pitch</h1>
