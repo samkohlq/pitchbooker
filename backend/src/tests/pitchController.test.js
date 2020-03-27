@@ -26,7 +26,7 @@ jest.mock("firebase-admin", () => ({
       verifyIdToken(idToken) {
         return new Promise((resolve, reject) => {
           process.nextTick(() =>
-            idToken
+            idToken === "testIdToken"
               ? resolve(idToken)
               : reject({
                   error: "idToken not found."
@@ -65,8 +65,18 @@ test("create pitchAPI creates new entry in Pitches table", async () => {
       phoneNum: "12345678",
       currentUserUid: "abcde"
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json", Authorization: "Bearer testIdToken" });
   expect(createProviderResponse.statusCode).toBe(200);
+  const createPitchResponseWrongToken = await request(app)
+    .post("/pitches/createPitch?currentUserUid=abcde")
+    .send({
+      name: "Test Pitch",
+      pricePerHour: "123",
+      address: "Test Pitch Road",
+      maxNumPlayersPerSide: "10"
+    })
+    .set({ Accept: "application/json", Authorization: "Bearer abc" });
+  expect(createPitchResponseWrongToken.statusCode).toBe(401);
   const createPitchResponse = await request(app)
     .post("/pitches/createPitch?currentUserUid=abcde")
     .send({
@@ -75,7 +85,7 @@ test("create pitchAPI creates new entry in Pitches table", async () => {
       address: "Test Pitch Road",
       maxNumPlayersPerSide: "10"
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json", Authorization: "Bearer testIdToken" });
   expect(createPitchResponse.statusCode).toBe(200);
   expect(createPitchResponse.body.name).toBe("Test Pitch");
   expect(createPitchResponse.body.pricePerHour).toBe(123);
@@ -93,7 +103,7 @@ test("retrieve pitches API to return pitch details if query has currentUserUid, 
       phoneNum: "12345678",
       currentUserUid: "abcde"
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json", Authorization: "Bearer testIdToken" });
   expect(createProviderResponse.statusCode).toBe(200);
   const createPitchResponse = await request(app)
     .post("/pitches/createPitch?currentUserUid=abcde")
@@ -103,11 +113,15 @@ test("retrieve pitches API to return pitch details if query has currentUserUid, 
       address: "Test Pitch Road",
       maxNumPlayersPerSide: "9"
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json", Authorization: "Bearer testIdToken" });
   expect(createPitchResponse.statusCode).toBe(200);
-  const retrievePitchResponse = await request(app).get(
-    "/pitches/retrievePitches?currentUserUid=abcde"
-  );
+  const retrievePitchResponseWrongToken = await request(app)
+    .get("/pitches/retrievePitches?currentUserUid=abcde")
+    .set({ Authorization: "Bearer abc" });
+  expect(retrievePitchResponseWrongToken.statusCode).toBe(401);
+  const retrievePitchResponse = await request(app)
+    .get("/pitches/retrievePitches?currentUserUid=abcde")
+    .set({ Authorization: "Bearer testIdToken" });
   expect(retrievePitchResponse.statusCode).toBe(200);
   expect(retrievePitchResponse.body[0].name).toBe("Test Pitch");
   expect(retrievePitchResponse.body[0].pricePerHour).toBe(123);
@@ -163,7 +177,7 @@ test("update pitches API to update pitch details based on information in the req
       phoneNum: "12345678",
       currentUserUid: "abcde"
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json", Authorization: "Bearer testIdToken" });
   expect(createProviderResponse.statusCode).toBe(200);
   const createPitchResponse = await request(app)
     .post("/pitches/createPitch?currentUserUid=abcde")
@@ -173,17 +187,32 @@ test("update pitches API to update pitch details based on information in the req
       address: "Test Pitch Road",
       maxNumPlayersPerSide: "9"
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json", Authorization: "Bearer testIdToken" });
   expect(createPitchResponse.statusCode).toBe(200);
-  const retrievePitchResponse = await request(app).get(
-    "/pitches/retrievePitches?currentUserUid=abcde"
-  );
+  const retrievePitchResponseWrongToken = await request(app)
+    .get("/pitches/retrievePitches?currentUserUid=abcde")
+    .set({ Authorization: "Bearer abc" });
+  expect(retrievePitchResponseWrongToken.statusCode).toBe(401);
+  const retrievePitchResponse = await request(app)
+    .get("/pitches/retrievePitches?currentUserUid=abcde")
+    .set({ Authorization: "Bearer testIdToken" });
   expect(retrievePitchResponse.statusCode).toBe(200);
   expect(retrievePitchResponse.body[0].name).toBe("Test Pitch");
   expect(retrievePitchResponse.body[0].pricePerHour).toBe(123);
   expect(retrievePitchResponse.body[0].address).toBe("Test Pitch Road");
   expect(retrievePitchResponse.body[0].maxNumPlayersPerSide).toBe(9);
   const pitchId = retrievePitchResponse.body[0].id;
+  const updatePitchResponseWrongToken = await request(app)
+    .put("/pitches/updatePitch")
+    .send({
+      name: "Test Pitch 2",
+      pricePerHour: "1234",
+      address: "Test Pitch Road 2",
+      maxNumPlayersPerSide: "10",
+      pitchId: pitchId
+    })
+    .set({ Accept: "application/json", Authorization: "Bearer abc" });
+  expect(updatePitchResponseWrongToken.statusCode).toBe(401);
   const updatePitchResponse = await request(app)
     .put("/pitches/updatePitch")
     .send({
@@ -193,11 +222,11 @@ test("update pitches API to update pitch details based on information in the req
       maxNumPlayersPerSide: "10",
       pitchId: pitchId
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json", Authorization: "Bearer testIdToken" });
   expect(updatePitchResponse.statusCode).toBe(200);
-  const retrievePitchResponseAfterUpdate = await request(app).get(
-    "/pitches/retrievePitches?currentUserUid=abcde"
-  );
+  const retrievePitchResponseAfterUpdate = await request(app)
+    .get("/pitches/retrievePitches?currentUserUid=abcde")
+    .set({ Authorization: "Bearer testIdToken" });
   expect(retrievePitchResponseAfterUpdate.statusCode).toBe(200);
   expect(retrievePitchResponseAfterUpdate.body[0].name).toBe("Test Pitch 2");
   expect(retrievePitchResponseAfterUpdate.body[0].pricePerHour).toBe(1234);
@@ -219,7 +248,7 @@ test("delete pitches API to delete pitch on information in the request body.", a
       phoneNum: "12345678",
       currentUserUid: "abcde"
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json", Authorization: "Bearer testIdToken" });
   expect(createProviderResponse.statusCode).toBe(200);
   const createPitchResponse = await request(app)
     .post("/pitches/createPitch?currentUserUid=abcde")
@@ -229,20 +258,24 @@ test("delete pitches API to delete pitch on information in the request body.", a
       address: "Test Pitch Road",
       maxNumPlayersPerSide: "9"
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json", Authorization: "Bearer testIdToken" });
   expect(createPitchResponse.statusCode).toBe(200);
-  const retrievePitchResponse = await request(app).get(
-    "/pitches/retrievePitches?currentUserUid=abcde"
-  );
+  const retrievePitchResponse = await request(app)
+    .get("/pitches/retrievePitches?currentUserUid=abcde")
+    .set({ Authorization: "Bearer testIdToken" });
   expect(retrievePitchResponse.statusCode).toBe(200);
   expect(retrievePitchResponse.body[0].name).toBe("Test Pitch");
   expect(retrievePitchResponse.body[0].pricePerHour).toBe(123);
   expect(retrievePitchResponse.body[0].address).toBe("Test Pitch Road");
   expect(retrievePitchResponse.body[0].maxNumPlayersPerSide).toBe(9);
   const pitchId = retrievePitchResponse.body[0].id;
-  const deletePitchResponse = await request(app).delete(
-    `/pitches/deletePitch?pitchId=${pitchId}`
-  );
+  const deletePitchResponseWrongToken = await request(app)
+    .delete(`/pitches/deletePitch?pitchId=${pitchId}`)
+    .set({ Authorization: "Bearer abc" });
+  expect(deletePitchResponseWrongToken.statusCode).toBe(401);
+  const deletePitchResponse = await request(app)
+    .delete(`/pitches/deletePitch?pitchId=${pitchId}`)
+    .set({ Authorization: "Bearer testIdToken" });
   expect(deletePitchResponse.statusCode).toBe(200);
   expect(deletePitchResponse.text).toBe("Delete success!");
 });

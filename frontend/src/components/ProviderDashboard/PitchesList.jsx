@@ -1,6 +1,6 @@
-import * as firebase from "firebase";
 import React from "react";
 import { Col, Row, Table } from "react-bootstrap";
+import firebase from "../../firebase";
 import Pitch from "./Pitch";
 import PitchSettingsForm from "./PitchSettingsForm";
 
@@ -21,9 +21,20 @@ class PitchesList extends React.Component {
     });
   };
 
-  fetchPitches(currentUserUid) {
+  fetchPitches = async currentUserUid => {
+    const idToken = await firebase
+      .auth()
+      .currentUser.getIdToken(true)
+      .then(function(idToken) {
+        return idToken;
+      });
     return fetch(
-      `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/pitches/retrievePitches?currentUserUid=${currentUserUid}`
+      `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/pitches/retrievePitches?currentUserUid=${currentUserUid}`,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`
+        }
+      }
     )
       .then(response => response.json())
       .then(json => {
@@ -31,7 +42,7 @@ class PitchesList extends React.Component {
           pitches: json
         });
       });
-  }
+  };
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {

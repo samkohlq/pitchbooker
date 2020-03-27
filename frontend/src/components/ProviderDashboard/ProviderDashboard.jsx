@@ -1,6 +1,6 @@
-import * as firebase from "firebase";
 import React from "react";
 import { Container, Spinner } from "react-bootstrap";
+import firebase from "../../firebase";
 import TopNavbar from "../TopNavbar";
 import AddPitch from "./AddPitch";
 import PitchesList from "./PitchesList";

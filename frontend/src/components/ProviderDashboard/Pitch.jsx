@@ -1,16 +1,23 @@
-import * as firebase from "firebase";
 import React from "react";
 import { Button } from "react-bootstrap";
+import firebase from "../../firebase";
 
 const Pitch = props => {
-  const handleDeleteClick = pitchId => e => {
+  const handleDeleteClick = pitchId => async e => {
     e.preventDefault();
+    const idToken = await firebase
+      .auth()
+      .currentUser.getIdToken(true)
+      .then(function(idToken) {
+        return idToken;
+      });
     fetch(
       `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/pitches/deletePitch?pitchId=${pitchId}`,
       {
         method: "DELETE",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`
         }
       }
     ).then(response => {

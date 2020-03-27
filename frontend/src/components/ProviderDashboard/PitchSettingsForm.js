@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
+import firebase from "../../firebase";
 
 class PitchSettingsForm extends React.Component {
   constructor(props) {
@@ -28,13 +29,20 @@ class PitchSettingsForm extends React.Component {
     this.setState({ maxNumPlayersPerSide: e.target.value });
   };
 
-  handleClick = e => {
+  handleClick = async e => {
+    const idToken = await firebase
+      .auth()
+      .currentUser.getIdToken(true)
+      .then(function(idToken) {
+        return idToken;
+      });
     fetch(
       `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/pitches/updatePitch`,
       {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`
         },
         body: JSON.stringify({
           name: this.state.pitchName

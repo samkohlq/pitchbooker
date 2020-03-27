@@ -32,7 +32,7 @@ jest.mock("firebase-admin", () => ({
       verifyIdToken(idToken) {
         return new Promise((resolve, reject) => {
           process.nextTick(() =>
-            idToken
+            idToken === "testIdToken"
               ? resolve(idToken)
               : reject({
                   error: "idToken not found."
@@ -73,7 +73,7 @@ test("create booking API creates new booking", async () => {
       bookingEndDateTime: date,
       pitchId: 1
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json" });
   expect(response.statusCode).toBe(200);
   expect(response.body.newBooking.bookerName).toBe("Test Booker Name");
   expect(response.body.newBooking.bookerEmail).toBe(
@@ -93,7 +93,7 @@ test("retrieve booking API retrieve existing booking", async () => {
       phoneNum: "12345678",
       currentUserUid: "abcde"
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json", Authorization: "Bearer testIdToken" });
   expect(createProviderResponse.statusCode).toBe(200);
   const createPitchResponse = await request(app)
     .post("/pitches/createPitch?currentUserUid=abcde")
@@ -103,11 +103,11 @@ test("retrieve booking API retrieve existing booking", async () => {
       address: "Test Pitch Road",
       maxNumPlayersPerSide: "9"
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json", Authorization: "Bearer testIdToken" });
   expect(createPitchResponse.statusCode).toBe(200);
-  const retrievePitchResponse = await request(app).get(
-    "/pitches/retrievePitches?currentUserUid=abcde"
-  );
+  const retrievePitchResponse = await request(app)
+    .get("/pitches/retrievePitches?currentUserUid=abcde")
+    .set({ Authorization: "Bearer testIdToken" });
   expect(retrievePitchResponse.statusCode).toBe(200);
   const pitchId = retrievePitchResponse.body[0].id;
   const response = await request(app)
@@ -120,11 +120,15 @@ test("retrieve booking API retrieve existing booking", async () => {
       bookingEndDateTime: date,
       pitchId: pitchId
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json", Authorization: "Bearer testIdToken" });
   expect(response.statusCode).toBe(200);
-  const retrieveBookingResponse = await request(app).get(
-    `/bookings/retrieveBookings?pitchId=${pitchId}`
-  );
+  const retrieveBookingResponseWrongToken = await request(app)
+    .get(`/bookings/retrieveBookings?pitchId=${pitchId}`)
+    .set({ Authorization: "Bearer testIdToken" });
+  expect(retrieveBookingResponseWrongToken.statusCode).toBe(200);
+  const retrieveBookingResponse = await request(app)
+    .get(`/bookings/retrieveBookings?pitchId=${pitchId}`)
+    .set({ Authorization: "Bearer testIdToken" });
   expect(retrieveBookingResponse.statusCode).toBe(200);
   expect(retrieveBookingResponse.body[0].bookerName).toBe("Test Booker Name");
   expect(retrieveBookingResponse.body[0].bookerEmail).toBe(

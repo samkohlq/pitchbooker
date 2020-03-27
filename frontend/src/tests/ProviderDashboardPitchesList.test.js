@@ -2,11 +2,21 @@ import { mount } from "enzyme";
 import React from "react";
 import PitchesList from "../components/ProviderDashboard/PitchesList";
 
-jest.mock("firebase", () => ({
+jest.mock("../firebase", () => ({
   auth() {
     return {
       onAuthStateChanged() {
-        return { user: { uid: "1" } };
+        const user = { user: { uid: "1" } };
+        return new Promise((resolve, reject) => {
+          process.nextTick(() => resolve(user));
+        });
+      },
+      currentUser: {
+        getIdToken(status) {
+          return new Promise((resolve, reject) => {
+            process.nextTick(() => resolve(status));
+          });
+        }
       }
     };
   }

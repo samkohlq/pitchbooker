@@ -16,7 +16,7 @@ jest.mock("firebase-admin", () => ({
       verifyIdToken(idToken) {
         return new Promise((resolve, reject) => {
           process.nextTick(() =>
-            idToken
+            idToken === "testIdToken"
               ? resolve(idToken)
               : reject({
                   error: "idToken not found."
@@ -56,6 +56,17 @@ afterAll(() => {
 });
 
 test("create provider API to create new entry in provider table in the database", async () => {
+  const createProviderResponseWrongAuthToken = await request(app)
+    .post("/providers/createProvider")
+    .send({
+      name: "Test Provider Name",
+      address: "Test Provider Road",
+      email: "testprovider@testprovider.com",
+      phoneNum: "12345678",
+      currentUserUid: "abcde"
+    })
+    .set({ Accept: "application/json", Authorization: "Bearer abc" });
+  expect(createProviderResponseWrongAuthToken.statusCode).toBe(401);
   const createProviderResponse = await request(app)
     .post("/providers/createProvider")
     .send({
@@ -65,7 +76,7 @@ test("create provider API to create new entry in provider table in the database"
       phoneNum: "12345678",
       currentUserUid: "abcde"
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json", Authorization: "Bearer testIdToken" });
   expect(createProviderResponse.statusCode).toBe(200);
   expect(createProviderResponse.body[0].name).toBe("Test Provider Name");
   expect(createProviderResponse.body[0].address).toBe("Test Provider Road");
@@ -86,16 +97,16 @@ test("retrieve provider API retrieve provider details if provider details exist 
       phoneNum: "12345678",
       currentUserUid: "abcde"
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json", Authorization: "Bearer testIdToken" });
   expect(createProviderResponse.statusCode).toBe(200);
   const retrieveProviderabcResponse = await request(app)
     .get("/providers/retrieveProvider?currentUserUid=abc")
-    .set("Authorization", "Bearer 123");
+    .set("Authorization", "Bearer testIdToken");
   expect(retrieveProviderabcResponse.statusCode).toBe(200);
   expect(retrieveProviderabcResponse.body.id).toBe(null);
   const retrieveProviderabcdeResponse = await request(app)
     .get("/providers/retrieveProvider?currentUserUid=abcde")
-    .set("Authorization", "Bearer 123");
+    .set("Authorization", "Bearer testIdToken");
   expect(retrieveProviderabcdeResponse.statusCode).toBe(200);
   expect(retrieveProviderabcdeResponse.body.name).toBe("Test Provider Name");
   expect(retrieveProviderabcdeResponse.body.address).toBe("Test Provider Road");
@@ -104,8 +115,12 @@ test("retrieve provider API retrieve provider details if provider details exist 
   );
   expect(retrieveProviderabcdeResponse.body.phoneNum).toBe("12345678");
   expect(retrieveProviderabcdeResponse.body.uid).toBe("abcde");
-  const retrieveProviderabcdeResponseNotAuthorized = await request(app).get(
+  const retrieveProviderabcdeResponseNoToken = await request(app).get(
     "/providers/retrieveProvider?currentUserUid=abcde"
   );
-  expect(retrieveProviderabcdeResponseNotAuthorized.statusCode).toBe(401);
+  expect(retrieveProviderabcdeResponseNoToken.statusCode).toBe(401);
+  const retrieveProviderabcdeResponseWrongToken = await request(app)
+    .get("/providers/retrieveProvider?currentUserUid=abcde")
+    .set("Authorization", "Bearer 123");
+  expect(retrieveProviderabcdeResponseWrongToken.statusCode).toBe(401);
 });
