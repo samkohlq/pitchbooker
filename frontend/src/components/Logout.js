@@ -17,8 +17,6 @@ export default class Logout extends React.Component {
         .signOut()
         .then(() => {
           console.log("signed out");
-          // this is where we want to redirect to root url
-          // BUG(Perry): Upon signing out and redirecting to '/', when i log in again, nothing seems to happen, the url becomes '/?mode=select'.
           this.setState({ redirect: "/" });
         });
     });
