@@ -124,8 +124,8 @@ test("retrieve booking API retrieve existing booking", async () => {
   expect(response.statusCode).toBe(200);
   const retrieveBookingResponseWrongToken = await request(app)
     .get(`/bookings/retrieveBookings?pitchId=${pitchId}`)
-    .set({ Authorization: "Bearer testIdToken" });
-  expect(retrieveBookingResponseWrongToken.statusCode).toBe(200);
+    .set({ Authorization: "Bearer abc" });
+  expect(retrieveBookingResponseWrongToken.statusCode).toBe(401);
   const retrieveBookingResponse = await request(app)
     .get(`/bookings/retrieveBookings?pitchId=${pitchId}`)
     .set({ Authorization: "Bearer testIdToken" });
