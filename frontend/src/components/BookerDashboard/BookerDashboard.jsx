@@ -88,6 +88,8 @@ class BookerDashboard extends React.Component {
                     onChange={date => {
                       this.handleDateTimeChange("startDateTime", date);
                     }}
+                    minDate={new Date()}
+                    showDisabledMonthNavigation
                   />
                 </Form.Group>
                 <Form.Group as={Col}>
@@ -103,6 +105,8 @@ class BookerDashboard extends React.Component {
                     onChange={date => {
                       this.handleDateTimeChange("endDateTime", date);
                     }}
+                    minDate={new Date()}
+                    showDisabledMonthNavigation
                   />
                 </Form.Group>
                 <Form.Group as={Col}>
