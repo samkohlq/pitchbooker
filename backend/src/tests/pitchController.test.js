@@ -127,8 +127,8 @@ test("retrieve pitches API to return pitch details if query has currentUserUid, 
   expect(retrievePitchResponse.body[0].pricePerHour).toBe(123);
   expect(retrievePitchResponse.body[0].address).toBe("Test Pitch Road");
   expect(retrievePitchResponse.body[0].maxNumPlayersPerSide).toBe(9);
-  const startDateTime = new Date();
-  const endDateTime = new Date();
+  const startDateTime = new Date(Date.now() + 100 * 60 * 60);
+  const endDateTime = new Date(Date.now() + 100 * 60 * 60);
   let maxNumPlayersPerSide = 8;
   const retrievePitchResponseWithoutUserUidDiffMaxNumPlayersPerSide = await request(
     app
@@ -168,7 +168,6 @@ test("retrieve pitches API to return pitch details if query has currentUserUid, 
   const pastDate = new Date(
     Date.now() + 1000 * 60 * 60 * (new Date().getTimezoneOffset() / 60 - 1)
   );
-  console.log(new Date().getTimezoneOffset());
   const retrievePitchResponseWithoutUserUidSameMaxNumPlayersPerSidePastDate = await request(
     app
   ).get(
