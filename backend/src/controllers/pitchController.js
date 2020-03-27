@@ -64,39 +64,43 @@ export const retrievePitches = async (req, res) => {
   } else {
     const startDateTime = new Date(req.query.startDateTime);
     const endDateTime = new Date(req.query.endDateTime);
-    const pitchIdsBookedAtTimeslot = await Booking.findAll({
-      attributes: ["PitchId"],
-      where: {
-        [Sequelize.Op.or]: [
-          {
-            bookingStartDateTime: {
-              [Sequelize.Op.lte]: startDateTime
+    if (startDateTime >= Date.now() && endDateTime >= Date.now()) {
+      const pitchIdsBookedAtTimeslot = await Booking.findAll({
+        attributes: ["PitchId"],
+        where: {
+          [Sequelize.Op.or]: [
+            {
+              bookingStartDateTime: {
+                [Sequelize.Op.lte]: startDateTime
+              },
+              bookingEndDateTime: {
+                [Sequelize.Op.gte]: endDateTime
+              }
             },
-            bookingEndDateTime: {
-              [Sequelize.Op.gte]: endDateTime
+            {
+              bookingStartDateTime: {
+                [Sequelize.Op.between]: [startDateTime, endDateTime]
+              }
+            },
+            {
+              bookingEndDateTime: {
+                [Sequelize.Op.between]: [startDateTime, endDateTime]
+              }
             }
-          },
-          {
-            bookingStartDateTime: {
-              [Sequelize.Op.between]: [startDateTime, endDateTime]
-            }
-          },
-          {
-            bookingEndDateTime: {
-              [Sequelize.Op.between]: [startDateTime, endDateTime]
-            }
-          }
-        ]
-      }
-    }).map(pitchId => pitchId.get("PitchId"));
-    const pitches = await Pitch.findAll({
-      where: {
-        id: { [Sequelize.Op.not]: pitchIdsBookedAtTimeslot },
-        maxNumPlayersPerSide: req.query.maxNumPlayersPerSide
-      },
-      order: [["pricePerHour", "ASC"]]
-    });
-    res.send(pitches);
+          ]
+        }
+      }).map(pitchId => pitchId.get("PitchId"));
+      const pitches = await Pitch.findAll({
+        where: {
+          id: { [Sequelize.Op.not]: pitchIdsBookedAtTimeslot },
+          maxNumPlayersPerSide: req.query.maxNumPlayersPerSide
+        },
+        order: [["pricePerHour", "ASC"]]
+      });
+      res.send(pitches);
+    } else {
+      res.send([]);
+    }
   }
 };
 
