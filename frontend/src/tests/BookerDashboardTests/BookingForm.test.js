@@ -3,8 +3,6 @@ import React from "react";
 import BookingForm from "../../components/BookerDashboard/BookingForm";
 
 it("fetches emails/sendBookingConfirmationEmail API when 'Book' button clicked", async () => {
-  // mock fetch
-  // const spy = jest.spyOn(global, "fetch");
   const pitchBooking = {
     newBooking: "new booking",
     associatedPitch: "associated pitch"

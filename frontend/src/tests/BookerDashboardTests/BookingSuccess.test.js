@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
 import React from "react";
-import BookingSuccess from "../components/BookerDashboard/BookingSuccess";
+import BookingSuccess from "../../components/BookerDashboard/BookingSuccess";
 
 it("Booking Success component can render without crashing", () => {
   const wrapper = mount(
