@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
 import React from "react";
-import PitchLists from "../components/BookerDashboard/PitchesList";
+import PitchLists from "../../components/BookerDashboard/PitchesList";
 
 const fakePitches = [
   {
