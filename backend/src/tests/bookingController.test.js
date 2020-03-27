@@ -62,15 +62,15 @@ jest.mock(
 );
 
 test("create booking API creates new booking", async () => {
-  const date = new Date();
+  const futureDate = new Date(Date.now() + 1000 * 60 * 60);
   const response = await request(app)
     .post("/bookings/createBooking")
     .send({
       bookerName: "Test Booker Name",
       bookerEmail: "TestBooker@TestBooker.com",
       bookerPhoneNum: "12345678",
-      bookingStartDateTime: date,
-      bookingEndDateTime: date,
+      bookingStartDateTime: futureDate,
+      bookingEndDateTime: futureDate,
       pitchId: 1
     })
     .set({ Accept: "application/json" });

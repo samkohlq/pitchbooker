@@ -165,6 +165,21 @@ test("retrieve pitches API to return pitch details if query has currentUserUid, 
     retrievePitchResponseWithoutUserUidSameMaxNumPlayersPerSide.body[0]
       .maxNumPlayersPerSide
   ).toBe(9);
+  const pastDate = new Date(
+    Date.now() + 1000 * 60 * 60 * (new Date().getTimezoneOffset() / 60 - 1)
+  );
+  console.log(new Date().getTimezoneOffset());
+  const retrievePitchResponseWithoutUserUidSameMaxNumPlayersPerSidePastDate = await request(
+    app
+  ).get(
+    `/pitches/retrievePitches?startDateTime=${pastDate}&endDateTime=${pastDate}&maxNumPlayersPerSide=${maxNumPlayersPerSide}`
+  );
+  expect(
+    retrievePitchResponseWithoutUserUidSameMaxNumPlayersPerSidePastDate.statusCode
+  ).toBe(200);
+  expect(
+    retrievePitchResponseWithoutUserUidSameMaxNumPlayersPerSidePastDate.body
+  ).toStrictEqual(empty);
 });
 
 test("update pitches API to update pitch details based on information in the request body.", async () => {
