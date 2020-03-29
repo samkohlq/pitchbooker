@@ -26,12 +26,19 @@ class ProviderInfoForm extends React.Component {
 
   handleClick = async () => {
     const currentUserUid = firebase.auth().currentUser.uid;
+    const idToken = await firebase
+      .auth()
+      .currentUser.getIdToken()
+      .then(function(idToken) {
+        return idToken;
+      });
     fetch(
       `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/providers/createProvider`,
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`
         },
         body: JSON.stringify({
           name: this.state.name,

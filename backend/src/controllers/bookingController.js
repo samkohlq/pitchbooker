@@ -1,4 +1,5 @@
 import { Booking, Pitch } from "../db/models";
+import admin from "../firebase";
 
 export const createBooking = async (req, res) => {
   const bookingStartDateTime = new Date(req.body.bookingStartDateTime);
@@ -23,7 +24,24 @@ export const createBooking = async (req, res) => {
 };
 
 export const retrieveBookings = async (req, res) => {
-  const pitch = await Pitch.findByPk(req.query.pitchId);
-  const bookings = await pitch.getBookings();
-  res.send(bookings);
+  let idToken = req.headers["authorization"];
+
+  if (idToken) {
+    if (idToken.startsWith("Bearer ")) {
+      idToken = idToken.slice(7, idToken.length);
+    }
+    admin
+      .auth()
+      .verifyIdToken(idToken)
+      .then(async function(decodedToken) {
+        const pitch = await Pitch.findByPk(req.query.pitchId);
+        const bookings = await pitch.getBookings();
+        res.send(bookings);
+      })
+      .catch(function(error) {
+        res.sendStatus(401);
+      });
+  } else {
+    res.sendStatus(401);
+  }
 };

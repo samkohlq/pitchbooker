@@ -1,6 +1,6 @@
-import * as firebase from "firebase";
 import React from "react";
 import { Container, Spinner } from "react-bootstrap";
+import firebase from "../../firebase";
 import TopNavbar from "../TopNavbar";
 import AddPitch from "./AddPitch";
 import PitchesList from "./PitchesList";
@@ -12,21 +12,32 @@ class ProviderDashboard extends React.Component {
     this.state = { providerSubmittedOrgnisationInfo: false, loading: true };
   }
 
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
-      const currentUserUid = user.uid;
-      fetch(
-        `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/providers/retrieveProvider?currentUserUid=${currentUserUid}`
-      )
-        .then(response => response.json())
-        .then(provider => {
-          if (provider.id) {
-            this.setState({ providerSubmittedOrgnisationInfo: true });
-          } else {
-            this.setState({ providerSubmittedOrgnisationInfo: false });
+  async componentDidMount() {
+    firebase.auth().onAuthStateChanged(async user => {
+      if (user) {
+        const currentUserUid = user.uid;
+        const idToken = await firebase
+          .auth()
+          .currentUser.getIdToken()
+          .then(function(idToken) {
+            return idToken;
+          });
+        fetch(
+          `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/providers/retrieveProvider?currentUserUid=${currentUserUid}`,
+          {
+            headers: { Authorization: `Bearer ${idToken}` }
           }
-          this.setState({ loading: false });
-        });
+        )
+          .then(response => response.json())
+          .then(provider => {
+            if (provider.id) {
+              this.setState({ providerSubmittedOrgnisationInfo: true });
+            } else {
+              this.setState({ providerSubmittedOrgnisationInfo: false });
+            }
+            this.setState({ loading: false });
+          });
+      }
     });
   }
 

@@ -1,4 +1,3 @@
-import * as firebase from "firebase";
 import React from "react";
 import {
   Accordion,
@@ -9,6 +8,7 @@ import {
   InputGroup,
   Row
 } from "react-bootstrap";
+import firebase from "../../firebase";
 
 class AddPitch extends React.Component {
   // define attributes in local state
@@ -33,14 +33,21 @@ class AddPitch extends React.Component {
   };
 
   // send HTTP POST request to backend when user clicks "submit"
-  handleClick = () => {
+  handleClick = async () => {
     const currentUserUid = firebase.auth().currentUser.uid;
+    const idToken = await firebase
+      .auth()
+      .currentUser.getIdToken()
+      .then(function(idToken) {
+        return idToken;
+      });
     fetch(
       `${process.env.REACT_APP_PITCH_BOOKER_API_SERVER_BASE_URL}/pitches/createPitch?currentUserUid=${currentUserUid}`,
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`
         },
         body: JSON.stringify({
           name: this.state.pitchName,

@@ -2,6 +2,49 @@ import request from "supertest";
 import app from "../app";
 import models from "../db/models";
 
+jest.mock("firebase-admin", () => ({
+  credential: {
+    cert(serviceaccount) {
+      return true;
+    }
+  },
+  initializeApp(credential) {
+    return jest.fn();
+  },
+  auth() {
+    return {
+      verifyIdToken(idToken) {
+        return new Promise((resolve, reject) => {
+          process.nextTick(() =>
+            idToken === "testIdToken"
+              ? resolve(idToken)
+              : reject({
+                  error: "idToken not found."
+                })
+          );
+        });
+      }
+    };
+  }
+}));
+
+jest.mock(
+  "../serviceAccountKey.json",
+  () => ({
+    type: "",
+    project_id: "",
+    private_key_id: "",
+    private_key: "",
+    client_email: "",
+    client_id: "",
+    auth_uri: "",
+    token_uri: "",
+    auth_provider_x509_cert_url: "",
+    client_x509_cert_url: ""
+  }),
+  { virtual: true }
+);
+
 afterEach(async () => {
   await models.Provider.destroy({
     where: {}
@@ -13,6 +56,17 @@ afterAll(() => {
 });
 
 test("create provider API to create new entry in provider table in the database", async () => {
+  const createProviderResponseWrongAuthToken = await request(app)
+    .post("/providers/createProvider")
+    .send({
+      name: "Test Provider Name",
+      address: "Test Provider Road",
+      email: "testprovider@testprovider.com",
+      phoneNum: "12345678",
+      currentUserUid: "abcde"
+    })
+    .set({ Accept: "application/json", Authorization: "Bearer abc" });
+  expect(createProviderResponseWrongAuthToken.statusCode).toBe(401);
   const createProviderResponse = await request(app)
     .post("/providers/createProvider")
     .send({
@@ -22,7 +76,7 @@ test("create provider API to create new entry in provider table in the database"
       phoneNum: "12345678",
       currentUserUid: "abcde"
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json", Authorization: "Bearer testIdToken" });
   expect(createProviderResponse.statusCode).toBe(200);
   expect(createProviderResponse.body[0].name).toBe("Test Provider Name");
   expect(createProviderResponse.body[0].address).toBe("Test Provider Road");
@@ -43,16 +97,16 @@ test("retrieve provider API retrieve provider details if provider details exist 
       phoneNum: "12345678",
       currentUserUid: "abcde"
     })
-    .set("Accept", "application/json");
+    .set({ Accept: "application/json", Authorization: "Bearer testIdToken" });
   expect(createProviderResponse.statusCode).toBe(200);
-  const retrieveProviderabcResponse = await request(app).get(
-    "/providers/retrieveProvider?currentUserUid=abc"
-  );
+  const retrieveProviderabcResponse = await request(app)
+    .get("/providers/retrieveProvider?currentUserUid=abc")
+    .set("Authorization", "Bearer testIdToken");
   expect(retrieveProviderabcResponse.statusCode).toBe(200);
   expect(retrieveProviderabcResponse.body.id).toBe(null);
-  const retrieveProviderabcdeResponse = await request(app).get(
-    "/providers/retrieveProvider?currentUserUid=abcde"
-  );
+  const retrieveProviderabcdeResponse = await request(app)
+    .get("/providers/retrieveProvider?currentUserUid=abcde")
+    .set("Authorization", "Bearer testIdToken");
   expect(retrieveProviderabcdeResponse.statusCode).toBe(200);
   expect(retrieveProviderabcdeResponse.body.name).toBe("Test Provider Name");
   expect(retrieveProviderabcdeResponse.body.address).toBe("Test Provider Road");
@@ -61,4 +115,12 @@ test("retrieve provider API retrieve provider details if provider details exist 
   );
   expect(retrieveProviderabcdeResponse.body.phoneNum).toBe("12345678");
   expect(retrieveProviderabcdeResponse.body.uid).toBe("abcde");
+  const retrieveProviderabcdeResponseNoToken = await request(app).get(
+    "/providers/retrieveProvider?currentUserUid=abcde"
+  );
+  expect(retrieveProviderabcdeResponseNoToken.statusCode).toBe(401);
+  const retrieveProviderabcdeResponseWrongToken = await request(app)
+    .get("/providers/retrieveProvider?currentUserUid=abcde")
+    .set("Authorization", "Bearer 123");
+  expect(retrieveProviderabcdeResponseWrongToken.statusCode).toBe(401);
 });

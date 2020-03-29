@@ -2,11 +2,21 @@ import { mount } from "enzyme";
 import React from "react";
 import PitchesList from "../../components/ProviderDashboard/PitchesList";
 
-jest.mock("firebase", () => ({
+jest.mock("../../firebase", () => ({
   auth() {
     return {
       onAuthStateChanged() {
-        return { user: { uid: "1" } };
+        const user = { user: { uid: "1" } };
+        return new Promise((resolve, reject) => {
+          process.nextTick(() => resolve(user));
+        });
+      },
+      currentUser: {
+        getIdToken(status) {
+          return new Promise((resolve, reject) => {
+            process.nextTick(() => resolve(status));
+          });
+        }
       }
     };
   }
@@ -38,6 +48,6 @@ it("renders pitches data", async () => {
   const wrapper = mount(<PitchesList />);
   await wrapper.instance().fetchPitches(1);
   expect(wrapper.state("pitches")).toBe(fakePitches);
-
+  wrapper.unmount();
   global.fetch.mockRestore();
 });
